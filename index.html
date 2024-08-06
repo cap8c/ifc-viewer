@@ -27,15 +27,28 @@
 
             var loader = new THREE.GLTFLoader();
             var url = 'https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb';
-            var proxyUrl = 'https://cors-anywhere.herokuapp.com/' + url;
-            loader.load(proxyUrl, function (gltf) {
-                console.log('Model loaded successfully:', gltf);
-                scene.add(gltf.scene);
-                camera.position.set(0, 2, 5);  // Adjust camera position for better view
-                animate();
-            }, undefined, function (error) {
-                console.error('An error occurred while loading the model:', error);
-            });
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    var blobUrl = URL.createObjectURL(blob);
+                    loader.load(blobUrl, function (gltf) {
+                        console.log('Model loaded successfully:', gltf);
+                        scene.add(gltf.scene);
+                        camera.position.set(0, 2, 5);  // Adjust camera position for better view
+                        animate();
+                    }, undefined, function (error) {
+                        console.error('An error occurred while loading the model:', error);
+                    });
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
 
             function animate() {
                 requestAnimationFrame(animate);
