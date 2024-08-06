@@ -9,39 +9,37 @@
     </style>
 </head>
 <body>
-    <!-- Load Three.js -->
-    <script src="https://threejs.org/build/three.js"></script>
-    <!-- Load GLTFLoader after Three.js -->
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/r129/examples/js/loaders/GLTFLoader.js"></script>
-    <script>
-        window.onload = function() {
-            console.log('Script starting...');
+    <!-- Load Three.js with defer -->
+    <script src="https://threejs.org/build/three.js" defer></script>
+    <!-- Load GLTFLoader after Three.js with defer -->
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r129/examples/js/loaders/GLTFLoader.js" defer></script>
+    <script defer>
+        console.log('Script starting...');
 
-            var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            var renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-            console.log('Renderer and scene setup done.');
+        console.log('Renderer and scene setup done.');
 
-            var loader = new THREE.GLTFLoader();
-            loader.load('https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb', function (gltf) {
-                console.log('Model loaded successfully:', gltf);
-                scene.add(gltf.scene);
-                camera.position.set(0, 2, 5);  // Adjust camera position for better view
-                animate();
-            }, undefined, function (error) {
-                console.error('An error occurred while loading the model:', error);
-            });
+        var loader = new THREE.GLTFLoader();
+        loader.load('https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb', function (gltf) {
+            console.log('Model loaded successfully:', gltf);
+            scene.add(gltf.scene);
+            camera.position.set(0, 2, 5);  // Adjust camera position for better view
+            animate();
+        }, undefined, function (error) {
+            console.error('An error occurred while loading the model:', error);
+        });
 
-            function animate() {
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-            }
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
 
-            console.log('Script loaded and running.');
-        };
+        console.log('Script loaded and running.');
     </script>
 </body>
 </html>
