@@ -7,15 +7,19 @@
         body { margin: 0; }
         canvas { display: block; }
     </style>
-    <!-- Load Three.js -->
-    <script src="https://threejs.org/build/three.js"></script>
-    <!-- Load GLTFLoader after Three.js -->
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/r129/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.129.0/examples/js/loaders/GLTFLoader.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             console.log('Script starting...');
+
+            // Ensure Three.js is defined
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js is not loaded correctly.');
+                return;
+            }
 
             var scene = new THREE.Scene();
             var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
