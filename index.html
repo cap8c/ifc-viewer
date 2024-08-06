@@ -19,7 +19,7 @@
         document.body.appendChild(renderer.domElement);
 
         var loader = new THREE.GLTFLoader();
-        loader.load('https://github.com/cap8c/ifc-viewer/blob/4bfa9f747142edb2e75b373e8d7ce285eab0103f/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb', function (gltf) {
+        loader.load('https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb', function (gltf) {
             scene.add(gltf.scene);
             camera.position.z = 5;
             animate();
