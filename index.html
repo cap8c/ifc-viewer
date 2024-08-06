@@ -18,13 +18,22 @@
         document.addEventListener("DOMContentLoaded", function() {
             // Initialize the IFC.js viewer
             const container = document.getElementById('ifc-viewer');
+            if (typeof IfcViewerAPI === 'undefined') {
+                console.error('IfcViewerAPI is not defined. Make sure IFC.js is loaded correctly.');
+                return;
+            }
+            
             const viewer = new IfcViewerAPI({ container });
             viewer.IFC.loader.ifcManager.setWasmPath("https://unpkg.com/web-ifc@latest/");
 
             // Load the IFC file
             async function loadIfc(url) {
-                await viewer.IFC.loadIfcUrl(url);
-                viewer.context.fitToFrame();
+                try {
+                    await viewer.IFC.loadIfcUrl(url);
+                    viewer.context.fitToFrame();
+                } catch (error) {
+                    console.error('Error loading IFC file:', error);
+                }
             }
 
             // Replace with the URL of your IFC file on GitHub Pages
