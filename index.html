@@ -19,16 +19,21 @@
         document.body.appendChild(renderer.domElement);
 
         var loader = new THREE.GLTFLoader();
-        loader.load('https://cap8c.github.io/ifc-viewer/ITE - Information Technology Engineering Building2020.glb', function (gltf) {
+        loader.load('https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb', function (gltf) {
+            console.log('Model loaded successfully:', gltf);
             scene.add(gltf.scene);
             camera.position.z = 5;
             animate();
+        }, undefined, function (error) {
+            console.error('An error occurred while loading the model:', error);
         });
 
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
+
+        console.log('Script loaded and running.');
     </script>
 </body>
 </html>
