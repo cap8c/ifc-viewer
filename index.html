@@ -5,19 +5,19 @@
     <title>IFC Viewer</title>
     <style>
         body { margin: 0; }
-        canvas { display: block; width: 100%; height: 100vh; }
+        #ifc-viewer { width: 100%; height: 100vh; display: block; }
     </style>
-    <!-- Include Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include web-ifc-viewer -->
+</head>
+<body>
+    <div id="ifc-viewer"></div>
     <script type="module">
-        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@0.0.84/dist/ifc-viewer-api.module.js';
+        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@latest/dist/ifc-viewer-api.module.js';
         
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", () => {
             // Initialize the IFC.js viewer
             const container = document.getElementById('ifc-viewer');
             const viewer = new IfcViewerAPI({ container });
-            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.37/");
+            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@latest/");
 
             // Load the IFC file
             async function loadIfc(url) {
@@ -35,8 +35,5 @@
             loadIfc(ifcUrl);
         });
     </script>
-</head>
-<body>
-    <canvas id="ifc-viewer"></canvas>
 </body>
 </html>
