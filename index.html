@@ -5,34 +5,40 @@
     <title>IFC Viewer</title>
     <style>
         body { margin: 0; }
-        #ifc-viewer { width: 100%; height: 100vh; display: block; }
+        canvas { display: block; width: 100%; height: 100vh; }
     </style>
+    <!-- Include Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Include IFC.js -->
+    <script src="https://cdn.jsdelivr.net/npm/ifcjs@latest/dist/IFC.js"></script>
 </head>
 <body>
-    <div id="ifc-viewer"></div>
-    <script type="module">
-        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@0.0.122/dist/ifc-viewer-api.module.js';
-        
-        document.addEventListener("DOMContentLoaded", () => {
+    <canvas id="ifc-viewer"></canvas>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
             // Initialize the IFC.js viewer
             const container = document.getElementById('ifc-viewer');
-            const viewer = new IfcViewerAPI({ container });
-            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.37/");
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: container });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const ifcLoader = new IFCLoader();
+            ifcLoader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/ifcjs@latest/");
 
             // Load the IFC file
-            async function loadIfc(url) {
-                try {
-                    await viewer.IFC.loadIfcUrl(url);
-                    viewer.context.fitToFrame();
-                } catch (error) {
-                    console.error('Error loading IFC file:', error);
-                }
-            }
-
-            // Replace with the URL of your IFC file on GitHub Pages
             const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
 
-            loadIfc(ifcUrl);
+            ifcLoader.load(ifcUrl, function (ifcModel) {
+                scene.add(ifcModel);
+                camera.position.z = 10;
+                animate();
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
         });
     </script>
 </body>
