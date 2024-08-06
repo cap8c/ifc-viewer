@@ -7,17 +7,17 @@
         body { margin: 0; overflow: hidden; }
         #viewer-container { width: 100%; height: 100vh; display: block; }
     </style>
-    <!-- Include Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include BIM Components -->
+</head>
+<body>
+    <div id="viewer-container"></div>
     <script type="module">
-        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/@bimcomponents/viewer@1.0.218/dist/ifc-viewer-api.module.js';
+        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/ifcjs@0.0.115/dist/IFC.js';
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Initialize the BIM Components viewer
+            // Initialize the IFC.js viewer
             const container = document.getElementById('viewer-container');
             const viewer = new IfcViewerAPI({ container });
-            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/@bimcomponents/ifc@0.0.37/");
+            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/ifcjs@0.0.115/");
 
             // Load the IFC file
             async function loadIfc(url) {
@@ -35,8 +35,5 @@
             loadIfc(ifcUrl);
         });
     </script>
-</head>
-<body>
-    <div id="viewer-container"></div>
 </body>
 </html>
