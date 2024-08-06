@@ -15,7 +15,6 @@
         document.addEventListener("DOMContentLoaded", function() {
             console.log('Script starting...');
 
-            // Ensure Three.js is defined
             if (typeof THREE === 'undefined') {
                 console.error('Three.js is not loaded correctly.');
                 return;
@@ -30,9 +29,10 @@
             console.log('Renderer and scene setup done.');
 
             var loader = new THREE.GLTFLoader();
-            var url = 'https://drive.google.com/uc?export=download&id=118jr09KQn685lq7Tz_ZDNQVmA3hpnpYc'; // Google Drive direct download link
+            var url = 'https://drive.google.com/uc?export=download&id=118jr09KQn685lq7Tz_ZDNQVmA3hpnpYc';
+            var proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
 
-            fetch(url)
+            fetch(proxyUrl)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
