@@ -11,13 +11,13 @@
 <body>
     <div id="ifc-viewer"></div>
     <script type="module">
-        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@latest/dist/ifc-viewer-api.module.js';
+        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@0.0.122/dist/ifc-viewer-api.module.js';
         
         document.addEventListener("DOMContentLoaded", () => {
             // Initialize the IFC.js viewer
             const container = document.getElementById('ifc-viewer');
             const viewer = new IfcViewerAPI({ container });
-            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@latest/");
+            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.37/");
 
             // Load the IFC file
             async function loadIfc(url) {
