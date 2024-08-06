@@ -7,17 +7,15 @@
         body { margin: 0; overflow: hidden; }
         #viewer-container { width: 100%; height: 100vh; display: block; }
     </style>
-    <!-- Include Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include web-ifc-viewer -->
+</head>
+<body>
+    <div id="viewer-container"></div>
     <script type="module">
-        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@0.0.142/dist/ifc-viewer-api.module.js';
+        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@0.0.122/dist/ifc-viewer-api.module.js';
 
         document.addEventListener("DOMContentLoaded", () => {
             // Initialize the IFC.js viewer
-            const container = document.createElement('div');
-            container.id = 'viewer-container';
-            document.body.appendChild(container);
+            const container = document.getElementById('viewer-container');
 
             const viewer = new IfcViewerAPI({ container });
             viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.37/");
@@ -38,7 +36,5 @@
             loadIfc(ifcUrl);
         });
     </script>
-</head>
-<body>
 </body>
 </html>
