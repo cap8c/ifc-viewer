@@ -9,46 +9,37 @@
     </style>
     <!-- Include Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include IFC.js -->
-    <script src="https://cdn.jsdelivr.net/npm/web-ifc-three@0.0.112/dist/IFCLoader.js"></script>
-</head>
-<body>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Create the Three.js renderer, scene, and camera
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+    <!-- Include web-ifc-three -->
+    <script type="module">
+        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/web-ifc-viewer@0.0.122/dist/ifc-viewer-api.module.js';
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize the IFC.js viewer
+            const container = document.createElement('div');
+            container.style.width = '100%';
+            container.style.height = '100vh';
+            document.body.appendChild(container);
 
-            // Adjust camera position
-            camera.position.z = 10;
-
-            // Set up window resize handling
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-
-            // Initialize the IFC loader
-            const ifcLoader = new IFCLoader();
-            ifcLoader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.37/");
+            const viewer = new IfcViewerAPI({ container });
+            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.37/");
 
             // Load the IFC file
-            const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
-            ifcLoader.load(ifcUrl, (ifcModel) => {
-                scene.add(ifcModel);
-                animate();
-            });
-
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
+            async function loadIfc(url) {
+                try {
+                    await viewer.IFC.loadIfcUrl(url);
+                    viewer.context.fitToFrame();
+                } catch (error) {
+                    console.error('Error loading IFC file:', error);
+                }
             }
+
+            // Replace with the URL of your IFC file on GitHub Pages
+            const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
+
+            loadIfc(ifcUrl);
         });
     </script>
+</head>
+<body>
 </body>
 </html>
