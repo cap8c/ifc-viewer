@@ -12,56 +12,58 @@
     <!-- Load Three.js -->
     <script src="https://threejs.org/build/three.js"></script>
     <script>
-        // Ensure Three.js is loaded before loading GLTFLoader
-        window.onload = function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            // Load GLTFLoader after Three.js is fully loaded
             var script = document.createElement('script');
             script.src = "https://cdn.rawgit.com/mrdoob/three.js/r129/examples/js/loaders/GLTFLoader.js";
+            script.onload = init;
             document.head.appendChild(script);
+        });
 
-            script.onload = function() {
-                console.log('Script starting...');
+        function init() {
+            console.log('Script starting...');
 
-                var scene = new THREE.Scene();
-                var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                var renderer = new THREE.WebGLRenderer();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                document.body.appendChild(renderer.domElement);
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
 
-                console.log('Renderer and scene setup done.');
+            console.log('Renderer and scene setup done.');
 
-                var loader = new THREE.GLTFLoader();
-                var url = 'https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb';
+            var loader = new THREE.GLTFLoader();
+            var url = 'https://cap8c.github.io/ifc-viewer/ITE%20-%20Information%20Technology%20Engineering%20Building2020.glb';
+            var proxyUrl = 'https://cors-anywhere.herokuapp.com/' + url;
 
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok ' + response.statusText);
-                        }
-                        return response.blob();
-                    })
-                    .then(blob => {
-                        var blobUrl = URL.createObjectURL(blob);
-                        loader.load(blobUrl, function (gltf) {
-                            console.log('Model loaded successfully:', gltf);
-                            scene.add(gltf.scene);
-                            camera.position.set(0, 2, 5);  // Adjust camera position for better view
-                            animate();
-                        }, undefined, function (error) {
-                            console.error('An error occurred while loading the model:', error);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('There was a problem with the fetch operation:', error);
+            fetch(proxyUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    var blobUrl = URL.createObjectURL(blob);
+                    loader.load(blobUrl, function (gltf) {
+                        console.log('Model loaded successfully:', gltf);
+                        scene.add(gltf.scene);
+                        camera.position.set(0, 2, 5);  // Adjust camera position for better view
+                        animate();
+                    }, undefined, function (error) {
+                        console.error('An error occurred while loading the model:', error);
                     });
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
 
-                function animate() {
-                    requestAnimationFrame(animate);
-                    renderer.render(scene, camera);
-                }
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
 
-                console.log('Script loaded and running.');
-            };
-        };
+            console.log('Script loaded and running.');
+        }
     </script>
 </body>
 </html>
