@@ -1,5 +1,5 @@
-import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
-import { IFCLoader } from 'https://unpkg.com/three@0.128.0/examples/jsm/loaders/IFCLoader.js';
+import * as THREE from 'three';
+import { IFCLoader } from 'three/addons/loaders/IFCLoader.js';
 
 let scene, camera, renderer, ifcLoader;
 
