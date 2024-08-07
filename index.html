@@ -1,42 +1,17 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>xeokit IFC Viewer</title>
-    <style>
-        body { margin: 0; overflow: hidden; }
-        #viewer-container { width: 100%; height: 100vh; }
-    </style>
-    <!-- Include xeokit SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk@1.7.1/dist/xeokit-sdk.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IFC Viewer</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+  </style>
 </head>
 <body>
-    <div id="viewer-container"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Initialize the xeokit viewer
-            const viewer = new xeokit.Viewer({
-                canvasId: "viewer-container",
-                transparent: true
-            });
-
-            // Load the IFC model
-            const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
-            new xeokit.IFCLoader(viewer).load({
-                src: ifcUrl,
-                edges: true,
-                onProgress: function (progress) {
-                    console.log("Loading IFC Model... " + Math.round(progress * 100) + "%");
-                },
-                onLoaded: function (model) {
-                    console.log("IFC Model loaded.");
-                    viewer.cameraFlight.jumpTo(model);
-                },
-                onError: function (err) {
-                    console.error("Error loading IFC Model: ", err);
-                }
-            });
-        });
-    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/viewer.js"></script>
 </body>
 </html>
