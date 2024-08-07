@@ -5,42 +5,24 @@
     <title>IFC Viewer</title>
     <style>
         body { margin: 0; overflow: hidden; }
-        #container { width: 100%; height: 100vh; display: block; }
+        #viewer-container { width: 100%; height: 100vh; display: block; }
     </style>
-    <!-- Include Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Include BIM Components -->
-    <script type="module">
-        import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
-        import * as OBC from 'https://cdn.jsdelivr.net/npm/@bimcomponents/viewer@1.0.218/dist/ifc-viewer-api.module.js';
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("container");
-
-            const components = new OBC.Components();
-
-            const worlds = components.get(OBC.Worlds);
-
-            const world = worlds.create(OBC.SimpleScene, OBC.SimpleCamera, OBC.SimpleRenderer);
-
-            world.scene = new OBC.SimpleScene(components);
-            world.renderer = new OBC.SimpleRenderer(components, container);
-            world.camera = new OBC.SimpleCamera(components);
-
-            components.init();
-
-            const material = new THREE.MeshLambertMaterial({ color: "#6528D7" });
-            const geometry = new THREE.BoxGeometry();
-            const cube = new THREE.Mesh(geometry, material);
-            world.scene.three.add(cube);
-
-            world.scene.setup();
-
-            world.camera.controls.setLookAt(3, 3, 3, 0, 0, 0);
-        });
-    </script>
+    <!-- Include xeokit BIM Viewer -->
+    <script src="https://cdn.jsdelivr.net/npm/xeokit-bim-viewer@2.4.79/dist/xeokit-bim-viewer.umd.min.js"></script>
 </head>
 <body>
-    <div id="container"></div>
+    <div id="viewer-container"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize the xeokit viewer
+            const viewer = new XKTViewer({
+                canvasId: "viewer-container"
+            });
+
+            // Load the IFC model
+            const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
+            viewer.loadIFC(ifcUrl);
+        });
+    </script>
 </body>
 </html>
