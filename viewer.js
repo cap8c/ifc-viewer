@@ -1,4 +1,4 @@
-import { IFCLoader } from 'three/examples/jsm/loaders/IFCLoader.js';
+import { IFCLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/IFCLoader.js';
 
 let scene, camera, renderer, ifcLoader;
 
