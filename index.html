@@ -5,35 +5,42 @@
     <title>IFC Viewer</title>
     <style>
         body { margin: 0; overflow: hidden; }
-        #viewer-container { width: 100%; height: 100vh; display: block; }
+        #container { width: 100%; height: 100vh; display: block; }
     </style>
-</head>
-<body>
-    <div id="viewer-container"></div>
+    <!-- Include Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Include BIM Components -->
     <script type="module">
-        import { IfcViewerAPI } from 'https://cdn.jsdelivr.net/npm/ifcjs@0.0.115/dist/IFC.js';
+        import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+        import * as OBC from 'https://cdn.jsdelivr.net/npm/@bimcomponents/viewer@1.0.218/dist/ifc-viewer-api.module.js';
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Initialize the IFC.js viewer
-            const container = document.getElementById('viewer-container');
-            const viewer = new IfcViewerAPI({ container });
-            viewer.IFC.loader.ifcManager.setWasmPath("https://cdn.jsdelivr.net/npm/ifcjs@0.0.115/");
+            const container = document.getElementById("container");
 
-            // Load the IFC file
-            async function loadIfc(url) {
-                try {
-                    await viewer.IFC.loadIfcUrl(url);
-                    viewer.context.fitToFrame();
-                } catch (error) {
-                    console.error('Error loading IFC file:', error);
-                }
-            }
+            const components = new OBC.Components();
 
-            // Replace with the URL of your IFC file on GitHub Pages
-            const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
+            const worlds = components.get(OBC.Worlds);
 
-            loadIfc(ifcUrl);
+            const world = worlds.create(OBC.SimpleScene, OBC.SimpleCamera, OBC.SimpleRenderer);
+
+            world.scene = new OBC.SimpleScene(components);
+            world.renderer = new OBC.SimpleRenderer(components, container);
+            world.camera = new OBC.SimpleCamera(components);
+
+            components.init();
+
+            const material = new THREE.MeshLambertMaterial({ color: "#6528D7" });
+            const geometry = new THREE.BoxGeometry();
+            const cube = new THREE.Mesh(geometry, material);
+            world.scene.three.add(cube);
+
+            world.scene.setup();
+
+            world.camera.controls.setLookAt(3, 3, 3, 0, 0, 0);
         });
     </script>
+</head>
+<body>
+    <div id="container"></div>
 </body>
 </html>
