@@ -29,7 +29,7 @@ function init() {
   
   // IFC Loader
   ifcLoader = new IFCLoader();
-  ifcLoader.setWasmPath('libs/');
+  ifcLoader.setWasmPath('/');
   ifcLoader.load('RST_basic_sample_project.ifc', (ifcModel) => {
     scene.add(ifcModel);
   });
