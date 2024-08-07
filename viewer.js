@@ -28,7 +28,7 @@ function init() {
   
   // IFC Loader
   ifcLoader = new IFCLoader();
-  ifcLoader.load('example.ifc', (ifcModel) => {
+  ifcLoader.load('RST_basic_sample_project.ifc', (ifcModel) => {
     scene.add(ifcModel);
   });
   
