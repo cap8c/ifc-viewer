@@ -1,4 +1,3 @@
-// public/js/viewer.js
 import { IFCLoader } from 'three/examples/jsm/loaders/IFCLoader.js';
 
 let scene, camera, renderer, ifcLoader;
@@ -29,7 +28,7 @@ function init() {
   
   // IFC Loader
   ifcLoader = new IFCLoader();
-  ifcLoader.load('path_to_your_ifc_file.ifc', (ifcModel) => {
+  ifcLoader.load('example.ifc', (ifcModel) => {
     scene.add(ifcModel);
   });
   
