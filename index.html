@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>IFC Viewer</title>
+    <meta charset="utf-8">
+    <title>xeokit BIM Viewer</title>
     <style>
         body { margin: 0; overflow: hidden; }
-        #viewer-container { width: 100%; height: 100vh; display: block; }
+        #viewer-container { width: 100%; height: 100vh; }
     </style>
-    <!-- Include xeokit SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk@1.7.1/dist/xeokit-sdk.min.js"></script>
+    <!-- Include xeokit BIM Viewer -->
+    <script src="https://cdn.jsdelivr.net/npm/xeokit-bim-viewer@2.4.79/dist/xeokit-bim-viewer.umd.min.js"></script>
 </head>
 <body>
     <div id="viewer-container"></div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Create a new xeokit Viewer
-            const viewer = new xeokit.Viewer({
+            // Initialize the xeokit viewer
+            const viewer = new xeokit.XKTViewer({
                 canvasId: "viewer-container"
             });
 
             // Load the IFC model
             const ifcUrl = 'https://cap8c.github.io/ifc-viewer/RST_basic_sample_project.ifc';
-            new xeokit.IFCParser(viewer).load({
-                src: ifcUrl,
+            viewer.loadIFC(ifcUrl, {
                 onProgress: function(progress) {
                     console.log("Loading IFC Model... " + Math.round(progress * 100) + "%");
                 },
