@@ -11,11 +11,11 @@ function init() {
   scene = new THREE.Scene();
   
   // Camera
-  camera = a new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(0, 10, 20);
   
   // Renderer
-  renderer = a new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   
@@ -28,7 +28,7 @@ function init() {
   scene.add(directionalLight);
   
   // IFC Loader
-  ifcLoader = a new IFCLoader();
+  ifcLoader = new IFCLoader();
   ifcLoader.load('RST_basic_sample_project.ifc', (ifcModel) => {
     scene.add(ifcModel);
   });
