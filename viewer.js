@@ -22,7 +22,7 @@ IfcAPI.Init().then(() => {
 
   const model = ifcLoader.load({
     id: "myModel",
-    src: "RST_basic_sample_project.ifc",
+    src: "RST_basic_sample_project.ifc",  // Load the IFC file from the root directory
     excludeTypes: ["IfcSpace"],
     edges: true
   });
