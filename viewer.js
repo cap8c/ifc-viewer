@@ -1,4 +1,4 @@
-import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin, XKTLoaderPlugin, Toolbar } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 const viewer = new Viewer({
@@ -18,6 +18,7 @@ const IfcAPI = new WebIFC.IfcAPI();
 IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
 let selectionToolActive = false;
+let xrayActive = false;
 
 IfcAPI.Init().then(() => {
     const ifcLoader = new WebIFCLoaderPlugin(viewer, {
@@ -83,6 +84,12 @@ IfcAPI.Init().then(() => {
         document.getElementById('toggleSelection').addEventListener('click', () => {
             selectionToolActive = !selectionToolActive;
             console.log(`Selection tool is now ${selectionToolActive ? 'active' : 'inactive'}`);
+        });
+
+        document.getElementById('toggleXRAY').addEventListener('click', () => {
+            xrayActive = !xrayActive;
+            viewer.scene.setObjectsXRayed(viewer.scene.objectIds, xrayActive);
+            console.log(`X-Ray mode is now ${xrayActive ? 'active' : 'inactive'}`);
         });
     });
 
