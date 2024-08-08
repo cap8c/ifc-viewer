@@ -32,13 +32,34 @@ IfcAPI.Init().then(() => {
         edges: true
     });
 
-    if (model) {
-        model.on("loaded", () => {
-            console.log("Model loaded successfully:", model);
-            treeView.addModel(model);
+    model.on("loaded", () => {
+        console.log("Model loaded successfully:", model);
+        treeView.addModel(model);
 
-            const tooltip = document.getElementById('tooltip');
-            viewer.scene.input.on("hover", (coords) => {
+        const tooltip = document.getElementById('tooltip');
+        viewer.scene.input.on("hover", (coords) => {
+            const hit = viewer.scene.pick({
+                canvasPos: coords,
+                pickSurface: true
+            });
+
+            if (hit) {
+                const entityId = hit.entity.id;
+                const metaObject = viewer.metaScene.metaObjects[entityId];
+
+                if (metaObject) {
+                    tooltip.style.left = `${coords[0]}px`;
+                    tooltip.style.top = `${coords[1]}px`;
+                    tooltip.style.display = 'block';
+                    tooltip.innerHTML = `Name: ${metaObject.name}<br>Type: ${metaObject.type}`;
+                }
+            } else {
+                tooltip.style.display = 'none';
+            }
+        });
+
+        viewer.scene.input.on("pick", (coords) => {
+            if (selectionToolActive) {
                 const hit = viewer.scene.pick({
                     canvasPos: coords,
                     pickSurface: true
@@ -46,53 +67,28 @@ IfcAPI.Init().then(() => {
 
                 if (hit) {
                     const entityId = hit.entity.id;
+                    viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
+                    viewer.scene.setObjectsXRayed([entityId], false);
+
                     const metaObject = viewer.metaScene.metaObjects[entityId];
-
                     if (metaObject) {
-                        tooltip.style.left = `${coords[0]}px`;
-                        tooltip.style.top = `${coords[1]}px`;
-                        tooltip.style.display = 'block';
-                        tooltip.innerHTML = `Name: ${metaObject.name}<br>Type: ${metaObject.type}`;
-                    }
-                } else {
-                    tooltip.style.display = 'none';
-                }
-            });
-
-            viewer.scene.input.on("pick", (coords) => {
-                if (selectionToolActive) {
-                    const hit = viewer.scene.pick({
-                        canvasPos: coords,
-                        pickSurface: true
-                    });
-
-                    if (hit) {
-                        const entityId = hit.entity.id;
-                        viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
-                        viewer.scene.setObjectsXRayed([entityId], false);
-
-                        const metaObject = viewer.metaScene.metaObjects[entityId];
-                        if (metaObject) {
-                            console.log(`Entity ${entityId} selected`);
-                            console.log(`Name: ${metaObject.name}`);
-                            console.log(`Type: ${metaObject.type}`);
-                        }
+                        console.log(`Entity ${entityId} selected`);
+                        console.log(`Name: ${metaObject.name}`);
+                        console.log(`Type: ${metaObject.type}`);
                     }
                 }
-            });
-
-            document.getElementById('toggleSelection').addEventListener('click', () => {
-                selectionToolActive = !selectionToolActive;
-                console.log(`Selection tool is now ${selectionToolActive ? 'active' : 'inactive'}`);
-            });
+            }
         });
 
-        model.on("error", (error) => {
-            console.error("Error loading IFC model:", error);
+        document.getElementById('toggleSelection').addEventListener('click', () => {
+            selectionToolActive = !selectionToolActive;
+            console.log(`Selection tool is now ${selectionToolActive ? 'active' : 'inactive'}`);
         });
-    } else {
-        console.error("Model not found:", model);
-    }
+    });
+
+    model.on("error", (error) => {
+        console.error("Error loading IFC model:", error);
+    });
 }).catch((error) => {
     console.error("Error initializing IfcAPI:", error);
 });
