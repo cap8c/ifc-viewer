@@ -1,4 +1,4 @@
-import {Viewer, WebIFCLoaderPlugin, SectionPlane} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import {Viewer, WebIFCLoaderPlugin} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 console.log("Initializing Viewer");
@@ -33,28 +33,6 @@ IfcAPI.Init().then(() => {
 
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
-
-    // Initialize Section Plane
-    const sectionPlane = new SectionPlane(viewer.scene, {
-      pos: [0, 0, 0],
-      dir: [1, 0, 0]
-    });
-
-    // Add section plane to the scene
-    viewer.scene.sectionPlanes = [sectionPlane];
-
-    // Example of updating the section plane dynamically
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight') {
-        sectionPlane.pos[0] += 0.1;
-      } else if (event.key === 'ArrowLeft') {
-        sectionPlane.pos[0] -= 0.1;
-      }
-    });
-
-    viewer.scene.on("tick", () => {
-      sectionPlane.update();
-    });
 
     // Setup Tooltips
     const tooltip = document.getElementById('tooltip');
