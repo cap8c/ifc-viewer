@@ -1,50 +1,60 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { IFCLoader } from 'three/addons/loaders/IFCLoader.js';
 
-let scene, camera, renderer, ifcLoader;
+let scene, camera, renderer, controls, ifcLoader;
 
-init();
-animate();
-
-function init() {
-  // Scene
+function Init3DView() {
   scene = new THREE.Scene();
-  
-  // Camera
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 10, 20);
-  
-  // Renderer
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-  
-  // Lights
-  const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
-  scene.add(ambientLight);
-  
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  directionalLight.position.set(1, 1, 0).normalize();
-  scene.add(directionalLight);
-  
-  // IFC Loader
+  const obj = document.getElementById("3dcontainer");
+  obj.appendChild(renderer.domElement);
+  camera = new THREE.PerspectiveCamera(45, obj.clientWidth / obj.clientHeight, 0.1, 1000);
+  renderer.setSize(obj.clientWidth - 20, obj.clientHeight - 20);
+  window.addEventListener('resize', onWindowResize, false);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+
+  scene.background = new THREE.Color(0x8cc7de);
+
+  InitBasicScene();
+
+  camera.position.z = 5;
+
+  // Initialize IFC Loader
   ifcLoader = new IFCLoader();
   ifcLoader.setWasmPath('/');
   ifcLoader.load('RST_basic_sample_project.ifc', (ifcModel) => {
     scene.add(ifcModel);
   });
-  
-  // Resize handler
-  window.addEventListener('resize', onWindowResize, false);
+
+  AnimationLoop();
+}
+
+function InitBasicScene() {
+  const directionalLight1 = new THREE.DirectionalLight(0xffeeff, 0.8);
+  directionalLight1.position.set(1, 1, 1);
+  scene.add(directionalLight1);
+
+  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight2.position.set(-1, 0.5, -1);
+  scene.add(directionalLight2);
+
+  const ambientLight = new THREE.AmbientLight(0xffffee, 0.25);
+  scene.add(ambientLight);
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const obj = document.getElementById("3dcontainer");
+  camera.aspect = obj.clientWidth / obj.clientHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(obj.clientWidth - 20, obj.clientHeight - 20);
 }
 
-function animate() {
-  requestAnimationFrame(animate);
+function AnimationLoop() {
+  requestAnimationFrame(AnimationLoop);
+  controls.update();
   renderer.render(scene, camera);
 }
+
+Init3DView();
