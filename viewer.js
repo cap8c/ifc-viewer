@@ -45,6 +45,7 @@ IfcAPI.Init().then(() => {
     const tooltip = document.getElementById('tooltip');
 
     viewer.scene.input.on("hover", (coords) => {
+      console.log("Hover coordinates:", coords); // Log hover coordinates
       const hit = viewer.scene.pick({
         canvasPos: coords,
         pickSurface: true
@@ -69,6 +70,7 @@ IfcAPI.Init().then(() => {
 
     // Setup Object Selection
     viewer.scene.input.on("pick", (coords) => {
+      console.log("Pick coordinates:", coords); // Log pick coordinates
       console.log(`Selection tool active: ${selectionToolActive}`);
       if (selectionToolActive) {
         const hit = viewer.scene.pick({
