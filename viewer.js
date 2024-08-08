@@ -11,7 +11,8 @@ viewer.camera.look = [13.44, 3.31, -14.83];
 viewer.camera.up = [0.10, 0.98, -0.14];
 
 const treeView = new TreeViewPlugin(viewer, {
-  containerElement: document.getElementById("treeview")
+  containerElement: document.getElementById("treeview"),
+  autoExpandDepth: 1 // Automatically expand the tree to show the IFC hierarchy
 });
 
 const IfcAPI = new WebIFC.IfcAPI();
