@@ -7,34 +7,25 @@
         html, body {
             height: 100%;
             background: #f2f2f2;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
         }
         body {
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             line-height: 1.50;
             -webkit-font-smoothing: antialiased;
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-        }
-        .column {
-            float: left;
-            width: 100%;
-        }
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-        iframe {
-            width: 80vw;
-            height: 100vh;
         }
         #myTreeViewContainer {
             width: 20vw;
             height: 100vh;
             overflow: auto;
             background-color: #f0f0f0;
+        }
+        #viewerContainer {
+            width: 80vw;
+            height: 100vh;
         }
         #tooltip {
             position: absolute;
@@ -52,13 +43,15 @@
         }
     </style>
 </head>
-<body onload="init()">
+<body>
     <div id="myTreeViewContainer"></div>
-    <div id="tooltip"></div>
-    <div class="toolbar">
-        <button id="toggleSelection">Toggle Selection</button>
+    <div id="viewerContainer">
+        <canvas id="myCanvas"></canvas>
+        <div id="tooltip"></div>
+        <div class="toolbar">
+            <button id="toggleSelection">Toggle Selection</button>
+        </div>
     </div>
-    <iframe id="embeddedViewer"></iframe>
     <script type="module" src="viewer.js"></script>
 </body>
 </html>
