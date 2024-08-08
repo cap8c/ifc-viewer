@@ -16,6 +16,8 @@ const IfcAPI = new WebIFC.IfcAPI();
 
 IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
+let selectionToolActive = false;
+
 IfcAPI.Init().then(() => {
   console.log("IfcAPI initialized");
   const ifcLoader = new WebIFCLoaderPlugin(viewer, {
@@ -61,26 +63,34 @@ IfcAPI.Init().then(() => {
 
     // Setup Object Selection
     viewer.scene.input.on("pick", (coords) => {
-      const hit = viewer.scene.pick({
-        canvasPos: coords,
-        pickSurface: true
-      });
+      if (selectionToolActive) {
+        const hit = viewer.scene.pick({
+          canvasPos: coords,
+          pickSurface: true
+        });
 
-      if (hit) {
-        const entityId = hit.entity.id;
-        console.log(`Entity ${entityId} selected`);
-        viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
-        viewer.scene.setObjectsXRayed([entityId], false);
-
-        const metaModel = viewer.metaScene.metaModels["myModel"];
-        const metaObject = metaModel.metaObjects[entityId];
-
-        if (metaObject) {
+        if (hit) {
+          const entityId = hit.entity.id;
           console.log(`Entity ${entityId} selected`);
-          console.log(`Name: ${metaObject.name}`);
-          console.log(`Type: ${metaObject.type}`);
+          viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
+          viewer.scene.setObjectsXRayed([entityId], false);
+
+          const metaModel = viewer.metaScene.metaModels["myModel"];
+          const metaObject = metaModel.metaObjects[entityId];
+
+          if (metaObject) {
+            console.log(`Entity ${entityId} selected`);
+            console.log(`Name: ${metaObject.name}`);
+            console.log(`Type: ${metaObject.type}`);
+          }
         }
       }
+    });
+
+    // Toggle Selection Tool Button
+    document.getElementById('toggleSelection').addEventListener('click', () => {
+      selectionToolActive = !selectionToolActive;
+      console.log(`Selection tool is now ${selectionToolActive ? 'active' : 'inactive'}`);
     });
   });
 
