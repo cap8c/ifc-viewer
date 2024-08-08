@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>IFC Viewer</title>
-    <style>
-        body { margin: 0; overflow: hidden; }
-        #myCanvas { width: 100vw; height: 100vh; display: block; }
-        #myTreeViewContainer { width: 300px; height: 100vh; position: absolute; top: 0; left: 0; background: #f2f2f2; z-index: 1; overflow: auto; }
-        #tooltip { position: absolute; background: rgba(0,0,0,0.75); color: #fff; padding: 5px; border-radius: 3px; display: none; z-index: 10; }
-        #toolbar { position: absolute; top: 10px; left: 320px; z-index: 2; }
-        .toolbar-button { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 14px; margin: 4px 2px; cursor: pointer; border-radius: 16px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IFC Viewer</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #myCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+    #toolbar {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+    }
+    #treeview {
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      width: 250px;
+      height: 600px;
+      overflow: auto;
+      z-index: 100;
+      background: white;
+      border: 1px solid #ccc;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div id="myTreeViewContainer"></div>
-    <canvas id="myCanvas"></canvas>
-    <div id="tooltip"></div>
-    <div id="toolbar">
-        <button id="toggleSelection" class="toolbar-button">Toggle Selection</button>
-        <button id="toggleXRAY" class="toolbar-button">Toggle X-Ray</button>
-    </div>
-    <script type="module" src="viewer.js"></script>
+  <canvas id="myCanvas"></canvas>
+  <div id="toolbar">
+    <button id="selectButton">Select</button>
+    <button id="toggleTreeView">Toggle Tree View</button>
+  </div>
+  <div id="treeview"></div>
+  <script type="module" src="viewer.js"></script>
 </body>
 </html>
