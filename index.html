@@ -26,6 +26,11 @@
         #viewerContainer {
             width: 80vw;
             height: 100vh;
+            position: relative;
+        }
+        #myCanvas {
+            width: 100%;
+            height: 100%;
         }
         #tooltip {
             position: absolute;
@@ -43,7 +48,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="init()">
     <div id="myTreeViewContainer"></div>
     <div id="viewerContainer">
         <canvas id="myCanvas"></canvas>
