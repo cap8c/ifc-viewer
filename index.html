@@ -4,75 +4,20 @@
     <meta charset="UTF-8">
     <title>IFC Viewer</title>
     <style>
-        html, body {
-            height: 100%;
-            background: #f2f2f2;
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            line-height: 1.50;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        #myTreeViewContainer {
-            width: 20vw;
-            height: 100vh;
-            overflow: auto;
-            background-color: #f0f0f0;
-        }
-
-        #viewerContainer {
-            width: 80vw;
-            height: 100vh;
-            position: relative;
-        }
-
-        #myCanvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        #tooltip {
-            position: absolute;
-            display: none;
-            background: #333;
-            color: #fff;
-            padding: 5px;
-            border-radius: 5px;
-            z-index: 10;
-        }
-
-        .toolbar {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .toolbar button {
-            margin: 5px;
-            padding: 10px;
-            background: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        body { margin: 0; overflow: hidden; }
+        #myCanvas { width: 100vw; height: 100vh; display: block; }
+        #myTreeViewContainer { width: 300px; height: 100vh; position: absolute; top: 0; left: 0; background: #f2f2f2; z-index: 1; overflow: auto; }
+        #tooltip { position: absolute; background: rgba(0,0,0,0.75); color: #fff; padding: 5px; border-radius: 3px; display: none; z-index: 10; }
+        #toolbar { position: absolute; top: 10px; left: 320px; z-index: 2; }
     </style>
 </head>
-<body onload="init()">
+<body>
     <div id="myTreeViewContainer"></div>
-    <div id="viewerContainer">
-        <canvas id="myCanvas"></canvas>
-        <div id="tooltip"></div>
-        <div class="toolbar">
-            <button id="toggleSelection">Toggle Selection</button>
-            <button id="toggleXRAY">Toggle X-Ray</button>
-        </div>
+    <canvas id="myCanvas"></canvas>
+    <div id="tooltip"></div>
+    <div id="toolbar">
+        <button id="toggleSelection">Toggle Selection</button>
+        <button id="toggleXRAY">Toggle X-Ray</button>
     </div>
     <script type="module" src="viewer.js"></script>
 </body>
