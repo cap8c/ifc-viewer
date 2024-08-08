@@ -45,6 +45,8 @@ IfcAPI.Init().then(() => {
         pickSurface: true
       });
 
+      console.log("Hover event", hit); // Log hover events
+
       if (hit) {
         const entityId = hit.entity.id;
         const metaModel = viewer.metaScene.metaModels["myModel"];
@@ -63,11 +65,14 @@ IfcAPI.Init().then(() => {
 
     // Setup Object Selection
     viewer.scene.input.on("pick", (coords) => {
+      console.log(`Selection tool active: ${selectionToolActive}`);
       if (selectionToolActive) {
         const hit = viewer.scene.pick({
           canvasPos: coords,
           pickSurface: true
         });
+
+        console.log("Pick event", hit); // Log pick events
 
         if (hit) {
           const entityId = hit.entity.id;
