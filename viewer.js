@@ -36,6 +36,11 @@ IfcAPI.Init().then(() => {
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
 
+    // Check if objects are loaded
+    const metaModel = viewer.metaScene.metaModels["myModel"];
+    console.log("Loaded MetaModel:", metaModel);
+    console.log("MetaObjects:", metaModel.metaObjects);
+
     // Setup Tooltips
     const tooltip = document.getElementById('tooltip');
 
@@ -49,7 +54,6 @@ IfcAPI.Init().then(() => {
 
       if (hit) {
         const entityId = hit.entity.id;
-        const metaModel = viewer.metaScene.metaModels["myModel"];
         const metaObject = metaModel.metaObjects[entityId];
 
         if (metaObject) {
@@ -80,7 +84,6 @@ IfcAPI.Init().then(() => {
           viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
           viewer.scene.setObjectsXRayed([entityId], false);
 
-          const metaModel = viewer.metaScene.metaModels["myModel"];
           const metaObject = metaModel.metaObjects[entityId];
 
           if (metaObject) {
