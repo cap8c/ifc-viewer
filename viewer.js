@@ -44,11 +44,29 @@ IfcAPI.Init().then(() => {
 });
 
 document.getElementById("selectButton").addEventListener("click", () => {
-  viewer.scene.setPickable(viewer.scene.objectIds, true);
-  viewer.scene.on("picked", (e) => {
-    const objectId = e.entity.id;
-    console.log("Picked object ID:", objectId);
-  });
+  const canvas = viewer.scene.canvas.canvas;
+
+  const handlePick = (e) => {
+    const coords = [e.clientX, e.clientY];
+    const hit = viewer.scene.pick({
+      canvasPos: coords
+    });
+
+    if (hit && hit.entity) {
+      const objectId = hit.entity.id;
+      console.log("Picked object ID:", objectId);
+    }
+  };
+
+  if (!viewer.selectionActive) {
+    canvas.addEventListener("click", handlePick);
+    viewer.selectionActive = true;
+    console.log("Selection tool is now active");
+  } else {
+    canvas.removeEventListener("click", handlePick);
+    viewer.selectionActive = false;
+    console.log("Selection tool is now inactive");
+  }
 });
 
 document.getElementById("toggleTreeView").addEventListener("click", () => {
