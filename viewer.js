@@ -28,23 +28,6 @@ IfcAPI.Init().then(() => {
   });
 
   model.on("loaded", () => {
-    const metaModel = viewer.metaScene.metaModels["myModel"];
-    const metaObject = viewer.metaScene.metaObjects["1xS3BCk291UvhgP2dvNsgp"];
-
-    const name = metaObject.name;
-    const type = metaObject.type;
-    const parent = metaObject.parent;
-    const children = metaObject.children;
-    const objectId = metaObject.id;
-    const objectIds = viewer.metaScene.getObjectIDsInSubtree(objectId);
-    const aabb = viewer.scene.getAABB(objectIds);
-
-    viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
-    viewer.scene.setObjectsXRayed(objectIds, false);
-
-    viewer.cameraFlight.flyTo(aabb);
-
-    const model = viewer.scene.models["myModel"];
-    model.destroy();
+    console.log("IFC model loaded successfully");
   });
 });
