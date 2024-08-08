@@ -8,6 +8,7 @@
     body {
       margin: 0;
       overflow: hidden;
+      font-family: Arial, sans-serif;
     }
     #myCanvas {
       position: absolute;
@@ -21,6 +22,20 @@
       top: 10px;
       left: 10px;
       z-index: 100;
+      display: flex;
+      gap: 10px;
+    }
+    .toolbar-button {
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .toolbar-button:hover {
+      background-color: #0056b3;
     }
     #treeview {
       position: absolute;
@@ -39,8 +54,8 @@
 <body>
   <canvas id="myCanvas"></canvas>
   <div id="toolbar">
-    <button id="selectButton">Select</button>
-    <button id="toggleTreeView">Toggle Tree View</button>
+    <button class="toolbar-button" id="selectButton">Select</button>
+    <button class="toolbar-button" id="toggleTreeView">Toggle Tree View</button>
   </div>
   <div id="treeview"></div>
   <script type="module" src="viewer.js"></script>
