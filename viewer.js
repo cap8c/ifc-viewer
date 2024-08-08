@@ -1,4 +1,4 @@
-import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin, XKTLoaderPlugin, Toolbar } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 const viewer = new Viewer({
@@ -98,4 +98,20 @@ IfcAPI.Init().then(() => {
     });
 }).catch((error) => {
     console.error("Error initializing IfcAPI:", error);
+});
+
+// Debugging: Check Network Requests
+window.addEventListener('load', () => {
+    console.log('Page loaded. Checking network requests for IFC model.');
+    fetch('RST_basic_sample_project.ifc')
+        .then(response => {
+            if (response.ok) {
+                console.log('IFC model loaded successfully:', response);
+            } else {
+                console.error('Failed to load IFC model:', response.status, response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching IFC model:', error);
+        });
 });
