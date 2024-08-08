@@ -1,60 +1,50 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { IFCLoader } from 'three/addons/loaders/IFCLoader.js';
+import {Viewer, WebIFCLoaderPlugin} from "xeokit-sdk";
+import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
-let scene, camera, renderer, controls, ifcLoader;
+const viewer = new Viewer({
+  canvasId: "myCanvas",
+  transparent: true
+});
 
-function Init3DView() {
-  scene = new THREE.Scene();
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  const obj = document.getElementById("3dcontainer");
-  obj.appendChild(renderer.domElement);
-  camera = new THREE.PerspectiveCamera(45, obj.clientWidth / obj.clientHeight, 0.1, 1000);
-  renderer.setSize(obj.clientWidth - 20, obj.clientHeight - 20);
-  window.addEventListener('resize', onWindowResize, false);
+viewer.camera.eye = [-2.56, 8.38, 8.27];
+viewer.camera.look = [13.44, 3.31, -14.83];
+viewer.camera.up = [0.10, 0.98, -0.14];
 
-  controls = new OrbitControls(camera, renderer.domElement);
+const IfcAPI = new WebIFC.IfcAPI();
 
-  scene.background = new THREE.Color(0x8cc7de);
+IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
-  InitBasicScene();
-
-  camera.position.z = 5;
-
-  // Initialize IFC Loader
-  ifcLoader = new IFCLoader();
-  ifcLoader.setWasmPath('./'); // Ensure this path is correct
-  ifcLoader.load('RST_basic_sample_project.ifc', (ifcModel) => {
-    scene.add(ifcModel);
+IfcAPI.Init().then(() => {
+  const ifcLoader = new WebIFCLoaderPlugin(viewer, {
+    WebIFC,
+    IfcAPI
   });
 
-  AnimationLoop();
-}
+  const model = ifcLoader.load({
+    id: "myModel",
+    src: "RST_basic_sample_project.ifc",
+    excludeTypes: ["IfcSpace"],
+    edges: true
+  });
 
-function InitBasicScene() {
-  const directionalLight1 = new THREE.DirectionalLight(0xffeeff, 0.8);
-  directionalLight1.position.set(1, 1, 1);
-  scene.add(directionalLight1);
+  model.on("loaded", () => {
+    const metaModel = viewer.metaScene.metaModels["myModel"];
+    const metaObject = viewer.metaScene.metaObjects["1xS3BCk291UvhgP2dvNsgp"];
 
-  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
-  directionalLight2.position.set(-1, 0.5, -1);
-  scene.add(directionalLight2);
+    const name = metaObject.name;
+    const type = metaObject.type;
+    const parent = metaObject.parent;
+    const children = metaObject.children;
+    const objectId = metaObject.id;
+    const objectIds = viewer.metaScene.getObjectIDsInSubtree(objectId);
+    const aabb = viewer.scene.getAABB(objectIds);
 
-  const ambientLight = new THREE.AmbientLight(0xffffee, 0.25);
-  scene.add(ambientLight);
-}
+    viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
+    viewer.scene.setObjectsXRayed(objectIds, false);
 
-function onWindowResize() {
-  const obj = document.getElementById("3dcontainer");
-  camera.aspect = obj.clientWidth / obj.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(obj.clientWidth - 20, obj.clientHeight - 20);
-}
+    viewer.cameraFlight.flyTo(aabb);
 
-function AnimationLoop() {
-  requestAnimationFrame(AnimationLoop);
-  controls.update();
-  renderer.render(scene, camera);
-}
-
-Init3DView();
+    const model = viewer.scene.models["myModel"];
+    model.destroy();
+  });
+});
