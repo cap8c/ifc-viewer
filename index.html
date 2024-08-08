@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IFC Viewer</title>
   <style>
-    body { margin: 0; }
-    #myCanvas { width: 100vw; height: 100vh; }
+    body { margin: 0; display: flex; }
+    #myCanvas { width: 80vw; height: 100vh; }
+    #myTreeViewContainer { width: 20vw; height: 100vh; overflow: auto; }
     #tooltip {
       position: absolute;
       background: #fff;
@@ -25,8 +26,6 @@
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/",
       "xeokit-sdk": "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js"
     }
   }
@@ -34,6 +33,7 @@
   <script type="module" src="viewer.js"></script>
 </head>
 <body>
+  <div id="myTreeViewContainer"></div>
   <canvas id="myCanvas"></canvas>
   <div id="tooltip"></div>
   <div id="controls">
