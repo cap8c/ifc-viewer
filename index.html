@@ -15,6 +15,12 @@
       display: none;
       z-index: 10;
     }
+    #controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 20;
+    }
   </style>
   <script type="importmap">
   {
@@ -30,5 +36,8 @@
 <body>
   <canvas id="myCanvas"></canvas>
   <div id="tooltip"></div>
+  <div id="controls">
+    <button id="toggleSelection">Toggle Selection Tool</button>
+  </div>
 </body>
 </html>
