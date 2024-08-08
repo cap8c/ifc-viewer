@@ -13,14 +13,14 @@
     #myCanvas {
       position: absolute;
       top: 0;
-      left: 0;
-      width: 100vw;
+      left: 300px; /* Adjust width for the tree view */
+      width: calc(100vw - 300px);
       height: 100vh;
     }
     #toolbar {
       position: absolute;
       top: 10px;
-      left: 10px;
+      left: 310px; /* Adjust width for the tree view */
       z-index: 100;
       display: flex;
       gap: 10px;
@@ -39,25 +39,25 @@
     }
     #treeview {
       position: absolute;
-      top: 50px;
-      left: 10px;
-      width: 250px;
-      height: 600px;
+      top: 0;
+      left: 0;
+      width: 300px; /* Width for the tree view */
+      height: 100vh;
       overflow: auto;
       z-index: 100;
       background: white;
-      border: 1px solid #ccc;
-      display: none;
+      border-right: 1px solid #ccc;
+      padding: 10px;
     }
   </style>
 </head>
 <body>
+  <div id="treeview"></div>
   <canvas id="myCanvas"></canvas>
   <div id="toolbar">
     <button class="toolbar-button" id="selectButton">Select</button>
     <button class="toolbar-button" id="toggleTreeView">Toggle Tree View</button>
   </div>
-  <div id="treeview"></div>
   <script type="module" src="viewer.js"></script>
 </body>
 </html>
