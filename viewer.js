@@ -38,70 +38,75 @@ IfcAPI.Init().then(() => {
 
     // Check if objects are loaded
     const metaModel = viewer.metaScene.metaModels["myModel"];
-    console.log("Loaded MetaModel:", metaModel);
-    console.log("MetaObjects:", metaModel.metaObjects);
+    if (metaModel) {
+      console.log("Loaded MetaModel:", metaModel);
+      console.log("MetaObjects:", metaModel.metaObjects);
 
-    // Setup Tooltips
-    const tooltip = document.getElementById('tooltip');
+      // Setup Tooltips
+      const tooltip = document.getElementById('tooltip');
 
-    viewer.scene.input.on("hover", (coords) => {
-      console.log("Hover coordinates:", coords); // Log hover coordinates
-      const hit = viewer.scene.pick({
-        canvasPos: coords,
-        pickSurface: true
-      });
-
-      console.log("Hover event", hit); // Log hover events
-
-      if (hit) {
-        const entityId = hit.entity.id;
-        const metaObject = metaModel.metaObjects[entityId];
-
-        if (metaObject) {
-          tooltip.style.left = `${coords[0]}px`;
-          tooltip.style.top = `${coords[1]}px`;
-          tooltip.style.display = 'block';
-          tooltip.innerHTML = `Name: ${metaObject.name}<br>Type: ${metaObject.type}`;
-        }
-      } else {
-        tooltip.style.display = 'none';
-      }
-    });
-
-    // Setup Object Selection
-    viewer.scene.input.on("pick", (coords) => {
-      console.log("Pick coordinates:", coords); // Log pick coordinates
-      console.log(`Selection tool active: ${selectionToolActive}`);
-      if (selectionToolActive) {
+      viewer.scene.input.on("hover", (coords) => {
+        console.log("Hover coordinates:", coords); // Log hover coordinates
         const hit = viewer.scene.pick({
           canvasPos: coords,
           pickSurface: true
         });
 
-        console.log("Pick event", hit); // Log pick events
+        console.log("Hover event:", hit); // Log hover events
 
         if (hit) {
           const entityId = hit.entity.id;
-          console.log(`Entity ${entityId} selected`);
-          viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
-          viewer.scene.setObjectsXRayed([entityId], false);
-
+          console.log("Hovered entityId:", entityId);
           const metaObject = metaModel.metaObjects[entityId];
 
           if (metaObject) {
+            tooltip.style.left = `${coords[0]}px`;
+            tooltip.style.top = `${coords[1]}px`;
+            tooltip.style.display = 'block';
+            tooltip.innerHTML = `Name: ${metaObject.name}<br>Type: ${metaObject.type}`;
+          }
+        } else {
+          tooltip.style.display = 'none';
+        }
+      });
+
+      // Setup Object Selection
+      viewer.scene.input.on("pick", (coords) => {
+        console.log("Pick coordinates:", coords); // Log pick coordinates
+        console.log(`Selection tool active: ${selectionToolActive}`);
+        if (selectionToolActive) {
+          const hit = viewer.scene.pick({
+            canvasPos: coords,
+            pickSurface: true
+          });
+
+          console.log("Pick event:", hit); // Log pick events
+
+          if (hit) {
+            const entityId = hit.entity.id;
             console.log(`Entity ${entityId} selected`);
-            console.log(`Name: ${metaObject.name}`);
-            console.log(`Type: ${metaObject.type}`);
+            viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
+            viewer.scene.setObjectsXRayed([entityId], false);
+
+            const metaObject = metaModel.metaObjects[entityId];
+
+            if (metaObject) {
+              console.log(`Entity ${entityId} selected`);
+              console.log(`Name: ${metaObject.name}`);
+              console.log(`Type: ${metaObject.type}`);
+            }
           }
         }
-      }
-    });
+      });
 
-    // Toggle Selection Tool Button
-    document.getElementById('toggleSelection').addEventListener('click', () => {
-      selectionToolActive = !selectionToolActive;
-      console.log(`Selection tool is now ${selectionToolActive ? 'active' : 'inactive'}`);
-    });
+      // Toggle Selection Tool Button
+      document.getElementById('toggleSelection').addEventListener('click', () => {
+        selectionToolActive = !selectionToolActive;
+        console.log(`Selection tool is now ${selectionToolActive ? 'active' : 'inactive'}`);
+      });
+    } else {
+      console.error("MetaModel not loaded properly.");
+    }
   });
 
   model.on("error", (error) => {
