@@ -1,4 +1,4 @@
-import {Viewer, WebIFCLoaderPlugin} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import {Viewer, WebIFCLoaderPlugin, CameraControl, SectionPlane} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 console.log("Initializing Viewer");
@@ -34,11 +34,69 @@ IfcAPI.Init().then(() => {
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
 
-    // Example of querying metadata
-    const metaModel = viewer.metaScene.metaModels["myModel"];
-    const allMetaObjects = metaModel.metaObjects;
+    // Initialize Camera Controls
+    const cameraControl = new CameraControl(viewer.scene, {
+      fly: true
+    });
 
-    console.log("All MetaObjects:", allMetaObjects);
+    // Initialize Section Plane
+    const sectionPlane = new SectionPlane(viewer.scene, {
+      pos: [0, 0, 0],
+      dir: [1, 0, 0]
+    });
+
+    viewer.scene.on("tick", () => {
+      sectionPlane.update();
+    });
+
+    // Setup Tooltips
+    const tooltip = document.getElementById('tooltip');
+
+    viewer.scene.input.on("hover", (coords) => {
+      const hit = viewer.scene.pick({
+        canvasPos: coords,
+        pickSurface: true
+      });
+
+      if (hit) {
+        const entityId = hit.entity.id;
+        const metaModel = viewer.metaScene.metaModels["myModel"];
+        const metaObject = metaModel.metaObjects[entityId];
+
+        if (metaObject) {
+          tooltip.style.left = `${coords[0]}px`;
+          tooltip.style.top = `${coords[1]}px`;
+          tooltip.style.display = 'block';
+          tooltip.innerHTML = `Name: ${metaObject.name}<br>Type: ${metaObject.type}`;
+        }
+      } else {
+        tooltip.style.display = 'none';
+      }
+    });
+
+    // Setup Object Selection
+    viewer.scene.input.on("pick", (coords) => {
+      const hit = viewer.scene.pick({
+        canvasPos: coords,
+        pickSurface: true
+      });
+
+      if (hit) {
+        const entityId = hit.entity.id;
+        console.log(`Entity ${entityId} selected`);
+        viewer.scene.setObjectsXRayed(viewer.scene.objectIds, true);
+        viewer.scene.setObjectsXRayed([entityId], false);
+
+        const metaModel = viewer.metaScene.metaModels["myModel"];
+        const metaObject = metaModel.metaObjects[entityId];
+
+        if (metaObject) {
+          console.log(`Entity ${entityId} selected`);
+          console.log(`Name: ${metaObject.name}`);
+          console.log(`Type: ${metaObject.type}`);
+        }
+      }
+    });
   });
 
   model.on("error", (error) => {
