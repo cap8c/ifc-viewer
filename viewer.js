@@ -23,7 +23,7 @@ function Init3DView() {
 
   // Initialize IFC Loader
   ifcLoader = new IFCLoader();
-  ifcLoader.setWasmPath('https://cap8c.github.io/ifc-viewer/'); // Ensure this path is correct
+  ifcLoader.setWasmPath('./'); // Ensure this path is correct
   ifcLoader.load('RST_basic_sample_project.ifc', (ifcModel) => {
     scene.add(ifcModel);
   });
