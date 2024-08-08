@@ -6,38 +6,27 @@
   <title>IFC Viewer</title>
   <style>
     body { margin: 0; display: flex; }
+    #myTreeViewContainer { width: 20vw; height: 100vh; overflow: auto; background-color: #f0f0f0; }
     #myCanvas { width: 80vw; height: 100vh; }
-    #myTreeViewContainer { width: 20vw; height: 100vh; overflow: auto; }
-    #tooltip {
-      position: absolute;
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 5px;
-      display: none;
-      z-index: 10;
-    }
-    #controls {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 20;
-    }
+    #tooltip { position: absolute; display: none; background: #333; color: #fff; padding: 5px; border-radius: 5px; }
+    .toolbar { position: absolute; top: 10px; left: 10px; z-index: 100; }
   </style>
   <script type="importmap">
   {
     "imports": {
-      "xeokit-sdk": "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/"
     }
   }
   </script>
-  <script type="module" src="viewer.js"></script>
 </head>
 <body>
   <div id="myTreeViewContainer"></div>
   <canvas id="myCanvas"></canvas>
   <div id="tooltip"></div>
-  <div id="controls">
-    <button id="toggleSelection">Toggle Selection Tool</button>
+  <div class="toolbar">
+    <button id="toggleSelection">Toggle Selection</button>
   </div>
+  <script type="module" src="viewer.js"></script>
 </body>
 </html>
