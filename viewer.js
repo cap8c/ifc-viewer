@@ -39,7 +39,13 @@ IfcAPI.Init().then(() => {
         console.log("Model loaded successfully:", model);
         treeView.addModel({ id: "myModel", name: "IFC Model", model });
 
+        // Ensure the model is added to the scene
+        viewer.scene.models["myModel"] = model;
+
         // Set camera position to fit the loaded model
+        viewer.cameraFlight.jumpTo(model);
+
+        // Update camera to fit the model
         const scene = viewer.scene;
         const camera = scene.camera;
         camera.eye = [-2.37, 18.97, -26.12];
