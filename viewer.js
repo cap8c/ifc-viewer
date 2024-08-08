@@ -1,4 +1,4 @@
-import {Viewer, WebIFCLoaderPlugin} from "xeokit-sdk";
+import {Viewer, WebIFCLoaderPlugin} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 const viewer = new Viewer({
