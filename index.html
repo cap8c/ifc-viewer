@@ -10,28 +10,30 @@
             margin: 0;
             overflow: hidden;
             display: flex;
-        }
-        body {
             font-family: 'Roboto', sans-serif;
             font-size: 14px;
             line-height: 1.50;
             -webkit-font-smoothing: antialiased;
         }
+
         #myTreeViewContainer {
             width: 20vw;
             height: 100vh;
             overflow: auto;
             background-color: #f0f0f0;
         }
+
         #viewerContainer {
             width: 80vw;
             height: 100vh;
             position: relative;
         }
+
         #myCanvas {
             width: 100%;
             height: 100%;
         }
+
         #tooltip {
             position: absolute;
             display: none;
@@ -39,22 +41,37 @@
             color: #fff;
             padding: 5px;
             border-radius: 5px;
+            z-index: 10;
         }
+
         .toolbar {
             position: absolute;
             top: 10px;
             left: 10px;
             z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toolbar button {
+            margin: 5px;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
-<body>
+<body onload="init()">
     <div id="myTreeViewContainer"></div>
     <div id="viewerContainer">
         <canvas id="myCanvas"></canvas>
         <div id="tooltip"></div>
         <div class="toolbar">
             <button id="toggleSelection">Toggle Selection</button>
+            <button id="toggleXRAY">Toggle X-Ray</button>
         </div>
     </div>
     <script type="module" src="viewer.js"></script>
