@@ -1,4 +1,4 @@
-import {Viewer, WebIFCLoaderPlugin} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import {Viewer, XKTLoaderPlugin, TreeViewPlugin, WebIFCLoaderPlugin} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 console.log("Initializing Viewer");
@@ -10,6 +10,11 @@ const viewer = new Viewer({
 viewer.camera.eye = [-2.56, 8.38, 8.27];
 viewer.camera.look = [13.44, 3.31, -14.83];
 viewer.camera.up = [0.10, 0.98, -0.14];
+
+console.log("Initializing TreeViewPlugin");
+const treeView = new TreeViewPlugin(viewer, {
+  containerElement: document.getElementById("myTreeViewContainer")
+});
 
 console.log("Initializing IfcAPI");
 const IfcAPI = new WebIFC.IfcAPI();
@@ -41,6 +46,9 @@ IfcAPI.Init().then(() => {
     if (metaModel) {
       console.log("Loaded MetaModel:", metaModel);
       console.log("MetaObjects:", metaModel.metaObjects);
+
+      // Add model to tree view
+      treeView.addModel(model);
 
       // Setup Tooltips
       const tooltip = document.getElementById('tooltip');
