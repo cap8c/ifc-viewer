@@ -37,7 +37,7 @@ IfcAPI.Init().then(() => {
 
     model.on("loaded", () => {
         console.log("Model loaded successfully:", model);
-        treeView.addModel(model);
+        treeView.addModel({ id: "myModel", name: "IFC Model", model });
 
         // Set camera position to fit the loaded model
         const scene = viewer.scene;
@@ -52,20 +52,4 @@ IfcAPI.Init().then(() => {
     });
 }).catch((error) => {
     console.error("Error initializing IfcAPI:", error);
-});
-
-// Debugging: Check Network Requests
-window.addEventListener('load', () => {
-    console.log('Page loaded. Checking network requests for IFC model.');
-    fetch('RST_basic_sample_project.ifc')
-        .then(response => {
-            if (response.ok) {
-                console.log('IFC model loaded successfully:', response);
-            } else {
-                console.error('Failed to load IFC model:', response.status, response.statusText);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching IFC model:', error);
-        });
 });
