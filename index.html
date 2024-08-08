@@ -7,6 +7,14 @@
   <style>
     body { margin: 0; }
     #myCanvas { width: 100vw; height: 100vh; }
+    #tooltip {
+      position: absolute;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 5px;
+      display: none;
+      z-index: 10;
+    }
   </style>
   <script type="importmap">
   {
@@ -21,5 +29,6 @@
 </head>
 <body>
   <canvas id="myCanvas"></canvas>
+  <div id="tooltip"></div>
 </body>
 </html>
