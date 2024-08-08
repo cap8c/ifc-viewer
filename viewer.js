@@ -1,4 +1,4 @@
-import {Viewer, WebIFCLoaderPlugin, CameraControl, SectionPlane} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import {Viewer, WebIFCLoaderPlugin, SectionPlane} from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 console.log("Initializing Viewer");
@@ -33,11 +33,6 @@ IfcAPI.Init().then(() => {
 
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
-
-    // Initialize Camera Controls
-    const cameraControl = new CameraControl(viewer.scene, {
-      fly: true
-    });
 
     // Initialize Section Plane
     const sectionPlane = new SectionPlane(viewer.scene, {
