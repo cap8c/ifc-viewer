@@ -52,8 +52,15 @@
             border: 1px solid #ccc;
             font-size: 14px;
         }
-
-        /* Removed loading overlay and progress bar */
+        #tooltip {
+            position: absolute;
+            display: none;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 3px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -64,6 +71,8 @@
     <input type="text" id="searchBox" placeholder="Search...">
     <button id="selectButton">Select</button>
 </div>
+
+<div id="tooltip"></div>
 
 <!-- Include the modular scripts -->
 <script type="module" src="viewerSetup.js"></script>
