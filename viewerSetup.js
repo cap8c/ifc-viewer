@@ -1,6 +1,7 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
-import { CAmbientLight, CDirLight } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import { AmbientLight } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/src/viewer/scene/lights/AmbientLight.js";
+import { DirLight } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/src/viewer/scene/lights/DirLight.js";
 
 export function setupViewer(canvasId) {
   const viewer = new Viewer({ canvasId, transparent: true });
@@ -32,13 +33,13 @@ export function setupViewer(canvasId) {
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
 
       // Add ambient light
-      new CAmbientLight(viewer.scene, {
+      new AmbientLight(viewer.scene, {
         color: [0.7, 0.7, 0.7], // Soft white ambient light
         intensity: 1.0
       });
 
       // Add directional light
-      new CDirLight(viewer.scene, {
+      new DirLight(viewer.scene, {
         dir: [0.5, -1, 0.5],
         color: [1.0, 1.0, 1.0],
         intensity: 0.8
