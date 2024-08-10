@@ -1,42 +1,74 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
-import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
-// Initialize the viewer
 const viewer = new Viewer({
     canvasId: "myCanvas",
     transparent: true
 });
 
-// Set the camera position
 viewer.camera.eye = [-2.56, 8.38, 8.27];
 viewer.camera.look = [13.44, 3.31, -14.83];
 viewer.camera.up = [0.10, 0.98, -0.14];
 
-// Initialize the tree view plugin
-const treeView = new TreeViewPlugin(viewer, {
-    containerElement: document.getElementById("myTreeViewContainer")
+const ifcLoader = new WebIFCLoaderPlugin(viewer, {
+    wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/"
 });
 
-// Initialize the IFC API and loader
-const ifcAPI = new WebIFC.IfcAPI();
-ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
+const treeView = new TreeViewPlugin(viewer, {
+    containerElement: document.getElementById("treeViewContainer")
+});
 
-ifcAPI.Init().then(() => {
-    const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI: ifcAPI });
+ifcLoader.load({
+    id: "myModel",
+    src: "RST_basic_sample_project.ifc",  // Path to your IFC file
+    edges: true
+}).then(model => {
+    console.log("IFC model loaded successfully");
+    console.log("Loaded MetaModel:", model.metaModel);
 
-    const model = ifcLoader.load({
-        id: "myModel",
-        src: "RST_basic_sample_project.ifc", // Path to the IFC file
-        edges: true
+    // Expand the tree view to show hierarchy
+    treeView.expandToLevel(2);
+
+    viewer.cameraFlight.flyTo({
+        aabb: model.aabb
     });
+});
 
-    model.on("loaded", (modelInstance) => {
-        console.log("IFC model loaded successfully");
-        viewer.scene.cameraFlight.flyTo(modelInstance.aabb); // Fly to the model's bounding box
-        treeView.build(modelInstance); // Build the tree view from the model
-    });
+const selectButton = document.getElementById("selectButton");
+selectButton.addEventListener("click", () => {
+    viewer.scene.setPickable(viewer.scene.objectIds, true);
+    viewer.scene.input.on("picked", (e) => {
+        const entity = viewer.scene.objects[e.entityId];
+        if (entity) {
+            console.log("Picked object ID:", entity.id);
+            viewer.scene.setObjectHighlighted(entity.id, true);
 
-    model.on("error", (error) => {
-        console.error("Error loading IFC model:", error);
+            // Display tooltip
+            const tooltip = document.createElement("div");
+            tooltip.style.position = "absolute";
+            tooltip.style.left = `${e.canvasPos[0]}px`;
+            tooltip.style.top = `${e.canvasPos[1]}px`;
+            tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+            tooltip.style.color = "white";
+            tooltip.style.padding = "5px";
+            tooltip.style.borderRadius = "3px";
+            tooltip.innerText = `ID: ${entity.id}`;
+            document.body.appendChild(tooltip);
+
+            setTimeout(() => {
+                document.body.removeChild(tooltip);
+            }, 2000);
+        }
     });
-}).catch(error => console.error("Error initializing IFC API:", error));
+});
+
+const searchBox = document.getElementById("searchBox");
+searchBox.addEventListener("input", () => {
+    const searchTerm = searchBox.value.toLowerCase();
+    const filtered = treeView.filterNodes(node => node.title.toLowerCase().includes(searchTerm));
+
+    if (filtered.length > 0) {
+        viewer.cameraFlight.flyTo({
+            aabb: viewer.scene.getAABB(filtered.map(node => node.id))
+        });
+    }
+});
