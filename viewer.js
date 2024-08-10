@@ -11,8 +11,8 @@ viewer.camera.look = [13.44, 3.31, -14.83];
 viewer.camera.up = [0.10, 0.98, -0.14];
 
 const treeView = new TreeViewPlugin(viewer, {
-  containerElement: document.getElementById("treeview"),
-  autoExpandDepth: 1 // Automatically expand the tree to show the IFC hierarchy
+  containerElement: document.getElementById("treeViewContainer"),
+  autoExpandDepth: 1
 });
 
 const IfcAPI = new WebIFC.IfcAPI();
@@ -27,7 +27,7 @@ IfcAPI.Init().then(() => {
 
   const model = ifcLoader.load({
     id: "myModel",
-    src: "RST_basic_sample_project.ifc",  // Ensure this path is correct
+    src: "RST_basic_sample_project.ifc",
     excludeTypes: ["IfcSpace"],
     edges: true
   });
@@ -35,11 +35,6 @@ IfcAPI.Init().then(() => {
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
     console.log("Loaded MetaModel:", viewer.metaScene.metaModels["myModel"]);
-
-    // Fit the camera to the model
-    viewer.cameraFlight.flyTo({
-      aabb: model.aabb
-    });
   });
 
   model.on("error", (error) => {
@@ -63,18 +58,14 @@ document.getElementById("selectButton").addEventListener("click", () => {
       const objectId = hit.entity.id;
       console.log("Picked object ID:", objectId);
       
-      // Highlight the selected object
       viewer.scene.setObjectsHighlighted([objectId], true);
-      // Unhighlight previously selected objects
       viewer.scene.setObjectsHighlighted(viewer.scene.highlightedObjectIds.filter(id => id !== objectId), false);
 
-      // Show tooltip
       tooltip.innerText = `Object ID: ${objectId}`;
       tooltip.style.left = `${e.clientX + 10}px`;
       tooltip.style.top = `${e.clientY + 10}px`;
       tooltip.style.display = 'block';
     } else {
-      // Hide tooltip if no object is hit
       tooltip.style.display = 'none';
     }
   };
@@ -87,12 +78,11 @@ document.getElementById("selectButton").addEventListener("click", () => {
     canvas.removeEventListener("click", handlePick);
     viewer.selectionActive = false;
     console.log("Selection tool is now inactive");
-    // Hide tooltip when selection tool is deactivated
     tooltip.style.display = 'none';
   }
 });
 
 document.getElementById("toggleTreeView").addEventListener("click", () => {
-  const treeViewDiv = document.getElementById("treeview");
+  const treeViewDiv = document.getElementById("treeViewContainer");
   treeViewDiv.style.display = treeViewDiv.style.display === "none" ? "block" : "none";
 });
