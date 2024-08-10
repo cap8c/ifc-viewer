@@ -22,20 +22,13 @@ export function setupViewer(canvasId) {
 
     const treeView = new TreeViewPlugin(viewer, {
       containerElement: document.getElementById("treeViewContainer"),
-      autoExpandDepth: 1
+      autoExpandDepth: 1, // Automatically expand the tree to show the IFC hierarchy
+      groupTypes: true,   // Group by type (e.g., IfcWall, IfcDoor)
+      groupLevels: true   // Group by levels (e.g., floors)
     });
 
     model.on("loaded", () => {
-      treeView.on("nodeClicked", (node) => {
-        if (node.entity) {
-          const entityId = node.entity.id;
-          viewer.scene.setObjectsHighlighted([entityId], true);
-          viewer.cameraFlight.flyTo({
-            aabb: viewer.scene.getObject(entityId).aabb
-          });
-        }
-      });
-
+      treeView.build();
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
     });
 
