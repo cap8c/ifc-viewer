@@ -28,7 +28,7 @@ export function setupViewer(canvasId) {
     });
 
     model.on("loaded", () => {
-      treeView.build();
+      // No need to manually call a build function
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
     });
 
