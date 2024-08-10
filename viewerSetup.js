@@ -1,38 +1,47 @@
-export function setupUI(viewer) {
-  const searchBox = document.getElementById("searchBox");
-  const selectButton = document.getElementById("selectButton");
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
-  if (!searchBox || !selectButton) {
-    console.error("SearchBox or SelectButton not found.");
-    return;
-  }
+export function setupViewer(canvasId) {
+  const viewer = new Viewer({ canvasId, transparent: true });
+  viewer.camera.eye = [-2.56, 8.38, 8.27];
+  viewer.camera.look = [13.44, 3.31, -14.83];
+  viewer.camera.up = [0.10, 0.98, -0.14];
 
-  const treeView = viewer.scene.plugins.treeView;
+  const IfcAPI = new WebIFC.IfcAPI();
+  IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
-  searchBox.addEventListener("input", () => {
-    const query = searchBox.value.toLowerCase();
-    
-    if (query) {
-      treeView.getNodes().forEach(node => {
-        const name = node.title.toLowerCase();
-        if (name.includes(query)) {
-          node.expand();
-          viewer.scene.setObjectsHighlighted([node.entity.id], true);
-        } else {
-          node.collapse();
-          viewer.scene.setObjectsHighlighted([node.entity.id], false);
-        }
+  IfcAPI.Init().then(() => {
+    const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI });
+
+    const model = ifcLoader.load({
+      id: "myModel",
+      src: "RST_basic_sample_project.ifc",
+      excludeTypes: ["IfcSpace"],
+      edges: true,
+    });
+
+    const treeView = new TreeViewPlugin(viewer, {
+      containerElement: document.getElementById("treeViewContainer"),
+      autoExpandDepth: 1, // Automatically expand the tree to show the IFC hierarchy
+      groupTypes: true,   // Group by type (e.g., IfcWall, IfcDoor)
+      groupLevels: true   // Group by levels (e.g., floors)
+    });
+
+    model.on("loaded", () => {
+      // Build a custom hierarchy for better organization
+      treeView.build({
+        levels: true, // Group by levels (e.g., floors)
+        types: true   // Group by types (e.g., IfcWall, IfcDoor)
       });
-    } else {
-      // If query is empty, collapse all and remove highlights
-      treeView.collapseAllNodes();
-      viewer.scene.setObjectsHighlighted([], false);
-    }
+      viewer.cameraFlight.flyTo({ aabb: model.aabb });
+    });
+
+    model.on("error", (error) => {
+      console.error("Error loading IFC model:", error);
+    });
+  }).catch((error) => {
+    console.error("Error initializing IfcAPI:", error);
   });
 
-  const toggleSelectionTool = () => {
-    // Existing select button functionality...
-  };
-
-  selectButton.addEventListener("click", toggleSelectionTool);
+  return viewer;
 }
