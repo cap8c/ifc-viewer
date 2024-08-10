@@ -1,16 +1,27 @@
-// uiHandlers.js
 export function setupUI(viewer) {
-  document.getElementById("selectButton").addEventListener("click", () => {
-    const canvas = viewer.scene.canvas.canvas;
-    const tooltip = document.getElementById("tooltip");
+  const canvas = viewer.scene.canvas.canvas;
+  const tooltip = document.getElementById("tooltip");
 
+  if (!canvas || !tooltip) {
+    console.error("Canvas or Tooltip element not found.");
+    return;
+  }
+
+  document.getElementById("selectButton").addEventListener("click", () => {
     const handlePick = (e) => {
-      const coords = [e.clientX, e.clientY];
-      const hit = viewer.scene.pick({ canvasPos: coords });
+      const rect = canvas.getBoundingClientRect();
+      const coords = [
+        e.clientX - rect.left,
+        e.clientY - rect.top,
+      ];
+      const hit = viewer.scene.pick({
+        canvasPos: coords
+      });
 
       if (hit && hit.entity) {
         const objectId = hit.entity.id;
         console.log("Picked object ID:", objectId);
+
         viewer.scene.setObjectsHighlighted([objectId], true);
         viewer.scene.setObjectsHighlighted(viewer.scene.highlightedObjectIds.filter(id => id !== objectId), false);
 
@@ -26,15 +37,12 @@ export function setupUI(viewer) {
     if (!viewer.selectionActive) {
       canvas.addEventListener("click", handlePick);
       viewer.selectionActive = true;
+      console.log("Selection tool is now active");
     } else {
       canvas.removeEventListener("click", handlePick);
       viewer.selectionActive = false;
+      console.log("Selection tool is now inactive");
       tooltip.style.display = 'none';
     }
-  });
-
-  document.getElementById("toggleTreeView").addEventListener("click", () => {
-    const treeViewDiv = document.getElementById("treeview");
-    treeViewDiv.style.display = treeViewDiv.style.display === "none" ? "block" : "none";
   });
 }
