@@ -11,18 +11,8 @@ export function setupViewer(canvasId) {
   const IfcAPI = new WebIFC.IfcAPI();
   IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
-  const loadingOverlay = document.getElementById("loadingOverlay");
-  const progressBarFill = document.getElementById("progressBarFill");
-  const loadingText = document.getElementById("loadingText");
-
   IfcAPI.Init().then(() => {
     const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI });
-
-    ifcLoader.on("progress", (progress) => {
-      const percentLoaded = Math.round(progress * 100);
-      progressBarFill.style.width = percentLoaded + "%";
-      loadingText.innerText = `Loading model: ${percentLoaded}%`;
-    });
 
     const model = ifcLoader.load({
       id: "myModel",
@@ -31,23 +21,30 @@ export function setupViewer(canvasId) {
       edges: true,
     });
 
-    model.on("loaded", () => {
-      loadingOverlay.style.display = 'none'; // Hide loading indicator
-      viewer.cameraFlight.flyTo({ aabb: model.aabb });
-    });
-
     const treeView = new TreeViewPlugin(viewer, {
       containerElement: document.getElementById("treeViewContainer"),
       autoExpandDepth: 1 // Automatically expand the tree to show the IFC hierarchy
     });
 
+    model.on("loaded", () => {
+      // Handle tree view selection
+      treeView.on("nodeSelected", (node) => {
+        const entityId = node.entity.id;
+        viewer.scene.setObjectsHighlighted([entityId], true);
+        viewer.cameraFlight.flyTo({
+          aabb: viewer.scene.getObject(entityId).aabb
+        });
+      });
+
+      // Automatically fly to model's bounding box
+      viewer.cameraFlight.flyTo({ aabb: model.aabb });
+    });
+
     model.on("error", (error) => {
       console.error("Error loading IFC model:", error);
-      loadingOverlay.style.display = 'none'; // Hide loading indicator on error
     });
   }).catch((error) => {
     console.error("Error initializing IfcAPI:", error);
-    loadingOverlay.style.display = 'none'; // Hide loading indicator on initialization error
   });
 
   return viewer;
