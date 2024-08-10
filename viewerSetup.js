@@ -22,18 +22,21 @@ export function setupViewer(canvasId) {
 
     const treeView = new TreeViewPlugin(viewer, {
       containerElement: document.getElementById("treeViewContainer"),
-      autoExpandDepth: 1, // Automatically expand the tree to show the IFC hierarchy
-      groupTypes: true,   // Group by type (e.g., IfcWall, IfcDoor)
-      groupLevels: true   // Group by levels (e.g., floors)
+      autoExpandDepth: 1,
+      groupTypes: true,
+      groupLevels: true
     });
 
     model.on("loaded", () => {
-      // Build a custom hierarchy for better organization
-      treeView.build({
-        levels: true, // Group by levels (e.g., floors)
-        types: true   // Group by types (e.g., IfcWall, IfcDoor)
-      });
+      // Removed treeView.build() and assuming automatic tree building
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
+
+      // Add Sunlight with Shadow
+      viewer.scene.lights.createDirectionalLight({
+        dir: [0.5, -1, 0.5],
+        intensity: 0.8,
+        castShadow: true
+      });
     });
 
     model.on("error", (error) => {
