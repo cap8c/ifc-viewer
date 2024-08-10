@@ -10,6 +10,9 @@ export function setupViewer(canvasId) {
 
   const IfcAPI = new WebIFC.IfcAPI();
   IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
+
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  
   IfcAPI.Init().then(() => {
     const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI });
     const model = ifcLoader.load({
@@ -20,14 +23,17 @@ export function setupViewer(canvasId) {
     });
 
     model.on("loaded", () => {
+      loadingOverlay.style.display = 'none'; // Hide loading indicator
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
     });
 
     model.on("error", (error) => {
       console.error("Error loading IFC model:", error);
+      loadingOverlay.style.display = 'none'; // Hide loading indicator on error
     });
   }).catch((error) => {
     console.error("Error initializing IfcAPI:", error);
+    loadingOverlay.style.display = 'none'; // Hide loading indicator on initialization error
   });
 
   return viewer;
