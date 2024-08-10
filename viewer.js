@@ -35,6 +35,11 @@ IfcAPI.Init().then(() => {
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
     console.log("Loaded MetaModel:", viewer.metaScene.metaModels["myModel"]);
+
+    // Fit the camera to the model
+    viewer.cameraFlight.flyTo({
+      aabb: model.aabb
+    });
   });
 
   model.on("error", (error) => {
@@ -64,9 +69,9 @@ document.getElementById("selectButton").addEventListener("click", () => {
       viewer.scene.setObjectsHighlighted(viewer.scene.highlightedObjectIds.filter(id => id !== objectId), false);
 
       // Show tooltip
-      tooltip.innerText = Object ID: ${objectId};
-      tooltip.style.left = ${e.clientX + 10}px;
-      tooltip.style.top = ${e.clientY + 10}px;
+      tooltip.innerText = `Object ID: ${objectId}`;
+      tooltip.style.left = `${e.clientX + 10}px`;
+      tooltip.style.top = `${e.clientY + 10}px`;
       tooltip.style.display = 'block';
     } else {
       // Hide tooltip if no object is hit
