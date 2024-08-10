@@ -1,13 +1,16 @@
 export function setupUI(viewer) {
   const searchBox = document.getElementById("searchBox");
   const selectButton = document.getElementById("selectButton");
+  const xRayButton = document.getElementById("xRayButton");
+  const sunButton = document.getElementById("sunButton");
 
-  if (!searchBox || !selectButton) {
-    console.error("SearchBox or SelectButton not found.");
+  if (!searchBox || !selectButton || !xRayButton || !sunButton) {
+    console.error("One or more UI elements not found.");
     return;
   }
 
-  const treeView = viewer.scene.plugins.treeView;
+  // Direct access to the treeView instance from viewer's plugins
+  const treeView = viewer.scene.treeView;
 
   searchBox.addEventListener("input", () => {
     const query = searchBox.value.toLowerCase();
@@ -24,7 +27,6 @@ export function setupUI(viewer) {
         }
       });
     } else {
-      // If query is empty, collapse all and remove highlights
       treeView.collapseAllNodes();
       viewer.scene.setObjectsHighlighted([], false);
     }
@@ -35,4 +37,14 @@ export function setupUI(viewer) {
   };
 
   selectButton.addEventListener("click", toggleSelectionTool);
+
+  xRayButton.addEventListener("click", () => {
+    const xRayEnabled = viewer.scene.objects[0].opacity === 0.3; // Assume all objects have the same opacity
+    viewer.scene.setObjectsOpacity([], xRayEnabled ? 1.0 : 0.3);
+  });
+
+  sunButton.addEventListener("click", () => {
+    const sunlight = viewer.scene.lights.getDirectionalLights()[0];
+    sunlight.setEnabled(!sunlight.enabled);
+  });
 }
