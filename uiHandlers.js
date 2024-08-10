@@ -8,6 +8,40 @@ export function setupUI(viewer) {
     return;
   }
 
+  const handleHover = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const coords = [
+      e.clientX - rect.left,
+      e.clientY - rect.top,
+    ];
+    const hit = viewer.scene.pick({
+      canvasPos: coords
+    });
+
+    if (hit && hit.entity) {
+      const objectId = hit.entity.id;
+      const object = viewer.metaScene.metaObjects[objectId];
+
+      if (object) {
+        let properties = '';
+        for (const key in object) {
+          if (object.hasOwnProperty(key)) {
+            properties += `${key}: ${object[key]}<br>`;
+          }
+        }
+
+        tooltip.innerHTML = properties;
+        tooltip.style.left = `${e.clientX + 10}px`;
+        tooltip.style.top = `${e.clientY + 10}px`;
+        tooltip.style.display = 'block';
+      }
+    } else {
+      tooltip.style.display = 'none';
+    }
+  };
+
+  canvas.addEventListener("mousemove", handleHover);
+
   const toggleSelectionTool = () => {
     if (!viewer.selectionActive) {
       const handlePick = (e) => {
