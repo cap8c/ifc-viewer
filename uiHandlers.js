@@ -7,26 +7,26 @@ export function setupUI(viewer) {
     return;
   }
 
-  const treeView = viewer.scene.plugins.treeView; // Reference to the TreeViewPlugin instance
+  const treeView = viewer.scene.plugins.treeView;
 
-  // Implementing search functionality
   searchBox.addEventListener("input", () => {
     const query = searchBox.value.toLowerCase();
     
-    // Clear previous search results
-    treeView.collapseAllNodes();
-
     if (query) {
-      // Expand and highlight matching nodes
       treeView.getNodes().forEach(node => {
         const name = node.title.toLowerCase();
         if (name.includes(query)) {
           node.expand();
           viewer.scene.setObjectsHighlighted([node.entity.id], true);
         } else {
+          node.collapse();
           viewer.scene.setObjectsHighlighted([node.entity.id], false);
         }
       });
+    } else {
+      // If query is empty, collapse all and remove highlights
+      treeView.collapseAllNodes();
+      viewer.scene.setObjectsHighlighted([], false);
     }
   });
 
