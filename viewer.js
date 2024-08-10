@@ -75,15 +75,4 @@ import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api
         });
     });
 
-    const searchBox = document.getElementById("searchBox");
-    searchBox.addEventListener("input", () => {
-        const searchTerm = searchBox.value.toLowerCase();
-        const filtered = treeView.filterNodes(node => node.title.toLowerCase().includes(searchTerm));
-
-        if (filtered.length > 0) {
-            viewer.cameraFlight.flyTo({
-                aabb: viewer.scene.getAABB(filtered.map(node => node.id))
-            });
-        }
-    });
 })();
