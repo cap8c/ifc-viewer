@@ -1,12 +1,13 @@
 export function setupUI(viewer) {
   const searchBox = document.getElementById("searchBox");
   const selectButton = document.getElementById("selectButton");
-  const treeView = viewer.getPlugin("TreeViewPlugin");
 
-  if (!searchBox || !selectButton || !treeView) {
-    console.error("SearchBox, SelectButton, or TreeViewPlugin not found.");
+  if (!searchBox || !selectButton) {
+    console.error("SearchBox or SelectButton not found.");
     return;
   }
+
+  const treeView = viewer.scene.plugins.treeView; // Reference to the TreeViewPlugin instance
 
   // Implementing search functionality
   searchBox.addEventListener("input", () => {
