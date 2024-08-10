@@ -1,4 +1,5 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 const viewer = new Viewer({
     canvasId: "myCanvas",
@@ -12,6 +13,7 @@ viewer.camera.up = [0.10, 0.98, -0.14];
 const treeViewContainer = document.getElementById("treeViewContainer");
 
 const ifcLoader = new WebIFCLoaderPlugin(viewer, {
+    WebIFC: WebIFC,  // Pass the WebIFC API here
     wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/"
 });
 
@@ -33,6 +35,8 @@ ifcLoader.load({
     viewer.cameraFlight.flyTo({
         aabb: model.aabb
     });
+}).catch(error => {
+    console.error("Error loading IFC model:", error);
 });
 
 const selectButton = document.getElementById("selectButton");
