@@ -12,69 +12,78 @@ viewer.camera.up = [0.10, 0.98, -0.14];
 
 const treeViewContainer = document.getElementById("treeViewContainer");
 
-const ifcLoader = new WebIFCLoaderPlugin(viewer, {
-    WebIFC: WebIFC,  // Pass the WebIFC API here
-    wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/"
-});
+// Initialize the IfcAPI instance
+const IfcAPI = new WebIFC.IfcAPI();
+IfcAPI.Init().then(() => {
+    console.log("IfcAPI initialized");
 
-const treeView = new TreeViewPlugin(viewer, {
-    containerElement: treeViewContainer
-});
-
-ifcLoader.load({
-    id: "myModel",
-    src: "RST_basic_sample_project.ifc",  // Path to your IFC file
-    edges: true
-}).then(model => {
-    console.log("IFC model loaded successfully");
-
-    // Expand the tree view to show hierarchy
-    treeView.buildDefaultTree();
-
-    // Fly the camera to fit the model in view
-    viewer.cameraFlight.flyTo({
-        aabb: model.aabb
+    const ifcLoader = new WebIFCLoaderPlugin(viewer, {
+        IfcAPI: IfcAPI,  // Pass the initialized IfcAPI here
+        wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/"
     });
-}).catch(error => {
-    console.error("Error loading IFC model:", error);
-});
 
-const selectButton = document.getElementById("selectButton");
-selectButton.addEventListener("click", () => {
-    viewer.scene.setPickable(viewer.scene.objectIds, true);
-    viewer.scene.input.on("picked", (e) => {
-        const entity = viewer.scene.objects[e.entityId];
-        if (entity) {
-            console.log("Picked object ID:", entity.id);
-            viewer.scene.setObjectHighlighted(entity.id, true);
+    const treeView = new TreeViewPlugin(viewer, {
+        containerElement: treeViewContainer
+    });
 
-            // Display tooltip
-            const tooltip = document.createElement("div");
-            tooltip.style.position = "absolute";
-            tooltip.style.left = `${e.canvasPos[0]}px`;
-            tooltip.style.top = `${e.canvasPos[1]}px`;
-            tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-            tooltip.style.color = "white";
-            tooltip.style.padding = "5px";
-            tooltip.style.borderRadius = "3px";
-            tooltip.innerText = `ID: ${entity.id}`;
-            document.body.appendChild(tooltip);
+    ifcLoader.load({
+        id: "myModel",
+        src: "RST_basic_sample_project.ifc",  // Path to your IFC file
+        edges: true
+    }).then(model => {
+        console.log("IFC model loaded successfully");
 
-            setTimeout(() => {
-                document.body.removeChild(tooltip);
-            }, 2000);
+        // Expand the tree view to show hierarchy
+        treeView.buildDefaultTree();
+
+        // Fly the camera to fit the model in view
+        viewer.cameraFlight.flyTo({
+            aabb: model.aabb
+        });
+    }).catch(error => {
+        console.error("Error loading IFC model:", error);
+    });
+
+    const selectButton = document.getElementById("selectButton");
+    selectButton.addEventListener("click", () => {
+        viewer.scene.setPickable(viewer.scene.objectIds, true);
+        viewer.scene.input.on("picked", (e) => {
+            const entity = viewer.scene.objects[e.entityId];
+            if (entity) {
+                console.log("Picked object ID:", entity.id);
+                viewer.scene.setObjectHighlighted(entity.id, true);
+
+                // Display tooltip
+                const tooltip = document.createElement("div");
+                tooltip.style.position = "absolute";
+                tooltip.style.left = `${e.canvasPos[0]}px`;
+                tooltip.style.top = `${e.canvasPos[1]}px`;
+                tooltip.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                tooltip.style.color = "white";
+                tooltip.style.padding = "5px";
+                tooltip.style.borderRadius = "3px";
+                tooltip.innerText = `ID: ${entity.id}`;
+                document.body.appendChild(tooltip);
+
+                setTimeout(() => {
+                    document.body.removeChild(tooltip);
+                }, 2000);
+            }
+        });
+    });
+
+    const searchBox = document.getElementById("searchBox");
+    searchBox.addEventListener("input", () => {
+        const searchTerm = searchBox.value.toLowerCase();
+        const filtered = treeView.filterNodes(node => node.title.toLowerCase().includes(searchTerm));
+
+        if (filtered.length > 0) {
+            viewer.cameraFlight.flyTo({
+                aabb: viewer.scene.getAABB(filtered.map(node => node.id))
+            });
         }
     });
-});
 
-const searchBox = document.getElementById("searchBox");
-searchBox.addEventListener("input", () => {
-    const searchTerm = searchBox.value.toLowerCase();
-    const filtered = treeView.filterNodes(node => node.title.toLowerCase().includes(searchTerm));
-
-    if (filtered.length > 0) {
-        viewer.cameraFlight.flyTo({
-            aabb: viewer.scene.getAABB(filtered.map(node => node.id))
-        });
-    }
+}).catch(error => {
+    console.error("Error initializing IfcAPI:", error);
 });
