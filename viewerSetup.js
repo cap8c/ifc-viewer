@@ -28,14 +28,14 @@ export function setupViewer(canvasId) {
     });
 
     model.on("loaded", () => {
-      // Removed treeView.build() and assuming automatic tree building
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
 
-      // Add Sunlight with Shadow
-      viewer.scene.lights.createDirectionalLight({
+      // Add basic light (without shadows)
+      viewer.scene.createLight({
+        type: "dir", // Directional light
         dir: [0.5, -1, 0.5],
-        intensity: 0.8,
-        castShadow: true
+        color: [1.0, 1.0, 1.0],
+        intensity: 0.8
       });
     });
 
