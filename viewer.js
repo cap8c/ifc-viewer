@@ -9,12 +9,14 @@ viewer.camera.eye = [-2.56, 8.38, 8.27];
 viewer.camera.look = [13.44, 3.31, -14.83];
 viewer.camera.up = [0.10, 0.98, -0.14];
 
+const treeViewContainer = document.getElementById("treeViewContainer");
+
 const ifcLoader = new WebIFCLoaderPlugin(viewer, {
     wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/"
 });
 
 const treeView = new TreeViewPlugin(viewer, {
-    containerElement: document.getElementById("treeViewContainer")
+    containerElement: treeViewContainer
 });
 
 ifcLoader.load({
@@ -23,11 +25,11 @@ ifcLoader.load({
     edges: true
 }).then(model => {
     console.log("IFC model loaded successfully");
-    console.log("Loaded MetaModel:", model.metaModel);
 
     // Expand the tree view to show hierarchy
-    treeView.expandToLevel(2);
+    treeView.buildDefaultTree();
 
+    // Fly the camera to fit the model in view
     viewer.cameraFlight.flyTo({
         aabb: model.aabb
     });
