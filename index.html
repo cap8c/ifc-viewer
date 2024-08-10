@@ -47,10 +47,10 @@
                 edges: true
             });
 
-            model.on("loaded", () => {
+            model.on("loaded", (modelInstance) => {
                 console.log("IFC model loaded successfully");
-                viewer.scene.cameraFlight.flyTo(model);
-                treeView.build(model); // Build the tree view from the model
+                viewer.scene.cameraFlight.flyTo(modelInstance.aabb); // Fly to the model's bounding box
+                treeView.build(modelInstance); // Build the tree view from the model
             });
 
             model.on("error", (error) => {
