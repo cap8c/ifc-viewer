@@ -1,24 +1,25 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
-const viewer = new Viewer({
-    canvasId: "myCanvas",
-    transparent: true
-});
+(async () => {
+    const viewer = new Viewer({
+        canvasId: "myCanvas",
+        transparent: true
+    });
 
-viewer.camera.eye = [-2.56, 8.38, 8.27];
-viewer.camera.look = [13.44, 3.31, -14.83];
-viewer.camera.up = [0.10, 0.98, -0.14];
+    viewer.camera.eye = [-2.56, 8.38, 8.27];
+    viewer.camera.look = [13.44, 3.31, -14.83];
+    viewer.camera.up = [0.10, 0.98, -0.14];
 
-const treeViewContainer = document.getElementById("treeViewContainer");
+    const treeViewContainer = document.getElementById("treeViewContainer");
 
-// Initialize the IfcAPI instance
-const IfcAPI = new WebIFC.IfcAPI();
-IfcAPI.Init().then(() => {
+    // Initialize the IfcAPI instance
+    const IfcAPI = new WebIFC.IfcAPI();
+    await IfcAPI.Init();
     console.log("IfcAPI initialized");
 
     const ifcLoader = new WebIFCLoaderPlugin(viewer, {
-        IfcAPI: IfcAPI,  // Pass the initialized IfcAPI here
+        IfcAPI,  // Pass the initialized IfcAPI here
         wasmPath: "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/"
     });
 
@@ -26,11 +27,13 @@ IfcAPI.Init().then(() => {
         containerElement: treeViewContainer
     });
 
-    ifcLoader.load({
-        id: "myModel",
-        src: "RST_basic_sample_project.ifc",  // Path to your IFC file
-        edges: true
-    }).then(model => {
+    try {
+        const model = await ifcLoader.load({
+            id: "myModel",
+            src: "RST_basic_sample_project.ifc",  // Path to your IFC file
+            edges: true
+        });
+
         console.log("IFC model loaded successfully");
 
         // Expand the tree view to show hierarchy
@@ -40,9 +43,9 @@ IfcAPI.Init().then(() => {
         viewer.cameraFlight.flyTo({
             aabb: model.aabb
         });
-    }).catch(error => {
+    } catch (error) {
         console.error("Error loading IFC model:", error);
-    });
+    }
 
     const selectButton = document.getElementById("selectButton");
     selectButton.addEventListener("click", () => {
@@ -83,7 +86,4 @@ IfcAPI.Init().then(() => {
             });
         }
     });
-
-}).catch(error => {
-    console.error("Error initializing IfcAPI:", error);
-});
+})();
