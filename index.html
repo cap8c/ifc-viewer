@@ -42,7 +42,7 @@
             edges: true
         }).then((model) => {
             viewer.scene.cameraFlight.flyTo(model);
-            treeView.build(model);
+            treeView.build(model);  // Build the tree view from the model
         }).catch(err => console.error("Error loading IFC model:", err));
     </script>
 </body>
