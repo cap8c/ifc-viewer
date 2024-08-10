@@ -35,6 +35,11 @@ IfcAPI.Init().then(() => {
   model.on("loaded", () => {
     console.log("IFC model loaded successfully");
     console.log("Loaded MetaModel:", viewer.metaScene.metaModels["myModel"]);
+
+    // Fit the camera to the model
+    viewer.cameraFlight.flyTo({
+      aabb: model.aabb
+    });
   });
 
   model.on("error", (error) => {
