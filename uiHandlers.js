@@ -38,13 +38,27 @@ export function setupUI(viewer) {
 
   selectButton.addEventListener("click", toggleSelectionTool);
 
+  // X-Ray Mode Toggle
   xRayButton.addEventListener("click", () => {
-    const xRayEnabled = viewer.scene.objects[0].opacity === 0.3; // Assume all objects have the same opacity
-    viewer.scene.setObjectsOpacity([], xRayEnabled ? 1.0 : 0.3);
+    const xRayEnabled = viewer.scene.objects.some(obj => obj.opacity === 0.3); // Check if any object is in X-Ray mode
+    viewer.scene.objects.forEach(obj => {
+      obj.opacity = xRayEnabled ? 1.0 : 0.3; // Toggle opacity
+    });
   });
 
+  // Sunlight Toggle
+  let sunlight;
   sunButton.addEventListener("click", () => {
-    const sunlight = viewer.scene.lights.getDirectionalLights()[0];
-    sunlight.setEnabled(!sunlight.enabled);
+    if (!sunlight) {
+      // If sunlight hasn't been initialized yet, create it
+      sunlight = new DirLight(viewer.scene, {
+        dir: [0.5, -1, 0.5],
+        color: [1.0, 1.0, 1.0],
+        intensity: 0.8
+      });
+    } else {
+      // Toggle the sunlight on/off
+      sunlight.setEnabled(!sunlight.enabled);
+    }
   });
 }
