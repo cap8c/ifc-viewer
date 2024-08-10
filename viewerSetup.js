@@ -12,9 +12,18 @@ export function setupViewer(canvasId) {
   IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
   const loadingOverlay = document.getElementById("loadingOverlay");
-  
+  const progressBarFill = document.getElementById("progressBarFill");
+  const loadingText = document.getElementById("loadingText");
+
   IfcAPI.Init().then(() => {
     const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI });
+
+    ifcLoader.on("progress", (progress) => {
+      const percentLoaded = Math.round(progress * 100);
+      progressBarFill.style.width = percentLoaded + "%";
+      loadingText.innerText = `Loading model: ${percentLoaded}%`;
+    });
+
     const model = ifcLoader.load({
       id: "myModel",
       src: "RST_basic_sample_project.ifc",
