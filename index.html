@@ -2,18 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IFC Viewer</title>
     <style>
-        body { margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        #myCanvas { width: 80%; height: 100%; }
-        #myTreeViewContainer { width: 20%; height: 100%; overflow-y: auto; background-color: #f0f0f0; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #myCanvas {
+            width: 80%;
+            height: 100%;
+            float: right;
+        }
+        #treeViewContainer {
+            width: 20%;
+            height: 100%;
+            float: left;
+            background-color: #f0f0f0;
+            overflow-y: scroll;
+        }
+        .toolbar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .toolbar button {
+            margin: 5px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .toolbar button:hover {
+            background-color: #0056b3;
+        }
+        .toolbar input[type="text"] {
+            padding: 8px;
+            margin-right: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div id="myTreeViewContainer"></div>
-    <canvas id="myCanvas"></canvas>
 
-    <script src="viewer.js"></script>
+<div id="treeViewContainer"></div>
+<canvas id="myCanvas"></canvas>
+<div class="toolbar">
+    <input type="text" id="searchBox" placeholder="Search...">
+    <button id="selectButton">Select</button>
+</div>
+
+<script type="module" src="viewer.js"></script>
 </body>
 </html>
