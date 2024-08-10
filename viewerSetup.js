@@ -22,20 +22,20 @@ export function setupViewer(canvasId) {
 
     const treeView = new TreeViewPlugin(viewer, {
       containerElement: document.getElementById("treeViewContainer"),
-      autoExpandDepth: 1 // Automatically expand the tree to show the IFC hierarchy
+      autoExpandDepth: 1
     });
 
     model.on("loaded", () => {
-      // Handle tree view selection
       treeView.on("nodeClicked", (node) => {
-        const entityId = node.entity.id;
-        viewer.scene.setObjectsHighlighted([entityId], true);
-        viewer.cameraFlight.flyTo({
-          aabb: viewer.scene.getObject(entityId).aabb
-        });
+        if (node.entity) {
+          const entityId = node.entity.id;
+          viewer.scene.setObjectsHighlighted([entityId], true);
+          viewer.cameraFlight.flyTo({
+            aabb: viewer.scene.getObject(entityId).aabb
+          });
+        }
       });
 
-      // Automatically fly to model's bounding box
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
     });
 
