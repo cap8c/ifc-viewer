@@ -127,14 +127,19 @@
 
         document.getElementById("selectButton").addEventListener("click", () => {
             if (viewer.scene.pick) {
-                const pick = viewer.scene.pick({
-                    canvasPos: viewer.scene.input.canvasPos
-                });
+                const canvas = viewer.scene.canvas.canvas;
+                canvas.addEventListener('click', (event) => {
+                    const rect = canvas.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    const pick = viewer.scene.pick({ canvasPos: [x, y] });
 
-                if (pick) {
-                    console.log("Picked object ID:", pick.entity.id);
-                    viewer.scene.setObjectsSelected([pick.entity.id], true);
-                }
+                    if (pick) {
+                        console.log("Picked object ID:", pick.entity.id);
+                        viewer.scene.setObjectsSelected([pick.entity.id], true);
+                        viewer.scene.setObjectsHighlighted([pick.entity.id], true);
+                    }
+                });
             }
         });
 
