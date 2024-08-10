@@ -69,18 +69,19 @@
             color: #007bff;
         }
 
-        .spinner {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #007bff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        #progressBarFill {
+            height: 100%;
+            width: 0;
+            background-color: #007bff;
+            transition: width 0.4s ease;
         }
 
         #loadingOverlay p {
@@ -100,8 +101,10 @@
 
 <!-- Loading Indicator -->
 <div id="loadingOverlay">
-    <div class="spinner"></div>
-    <p>Loading model, please wait...</p>
+    <div class="progress-bar">
+        <div id="progressBarFill"></div>
+    </div>
+    <p id="loadingText">Loading model, please wait...</p>
 </div>
 
 <!-- Include the modular scripts -->
