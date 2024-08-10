@@ -28,7 +28,7 @@ export function setupViewer(canvasId) {
 
     model.on("loaded", () => {
       // Handle tree view selection
-      treeView.on("nodeSelected", (node) => {
+      treeView.on("nodeClicked", (node) => {
         const entityId = node.entity.id;
         viewer.scene.setObjectsHighlighted([entityId], true);
         viewer.cameraFlight.flyTo({
