@@ -1,5 +1,5 @@
 // viewerSetup.js
-import { Viewer, WebIFCLoaderPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 
 export function setupViewer(canvasId) {
@@ -34,6 +34,11 @@ export function setupViewer(canvasId) {
     model.on("loaded", () => {
       loadingOverlay.style.display = 'none'; // Hide loading indicator
       viewer.cameraFlight.flyTo({ aabb: model.aabb });
+    });
+
+    const treeView = new TreeViewPlugin(viewer, {
+      containerElement: document.getElementById("treeViewContainer"),
+      autoExpandDepth: 1 // Automatically expand the tree to show the IFC hierarchy
     });
 
     model.on("error", (error) => {
