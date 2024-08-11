@@ -24,14 +24,14 @@ export function setupViewer(canvasId) {
         const treeView = new TreeViewPlugin(viewer, {
             containerElement: document.getElementById("treeViewContainer"),
             autoExpandDepth: 1,
-            groupTypes: true,   // Group by IFC types
-            groupLevels: true   // Group by levels (floors)
+            groupTypes: true,
+            groupLevels: false // Default to grouping by types
         });
 
         model.on("loaded", () => {
             viewer.cameraFlight.flyTo({ aabb: model.aabb });
 
-            // Setup tree view context menu
+            // Setup tree view context menu and node title clicks
             setupTreeView(viewer, treeView);
         });
 
