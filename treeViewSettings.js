@@ -45,7 +45,6 @@ export function setupTreeView(viewer, treeView) {
         };
     });
 
-    // Highlighting Nodes on Title Click and keeping others in X-Ray mode
     treeView.on("nodeTitleClicked", (e) => {
         const scene = viewer.scene;
         const objectIds = [];
@@ -56,7 +55,7 @@ export function setupTreeView(viewer, treeView) {
         });
         scene.setObjectsXRayed(scene.objectIds, true);
         scene.setObjectsVisible(scene.objectIds, true);
-        scene.setObjectsXRayed(objectIds, false);  // Keep selected object not X-Rayed
+        scene.setObjectsXRayed(objectIds, false);
         viewer.cameraFlight.flyTo({
             aabb: scene.getAABB(objectIds),
             duration: 0.5
