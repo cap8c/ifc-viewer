@@ -1,23 +1,16 @@
-export function setupUI(viewer, treeView) {
+document.addEventListener('DOMContentLoaded', () => {
     const searchBox = document.getElementById("searchBox");
+    const selectButton = document.getElementById("selectButton");
 
-    searchBox.addEventListener("input", () => {
-        const query = searchBox.value.toLowerCase();
-
-        treeView.withNodeTree(treeView.rootNode, (node) => {
-            const name = node.title.toLowerCase();
-            if (name.includes(query)) {
-                node.expand();
-                viewer.scene.setObjectsHighlighted([node.objectId], true);
-            } else {
-                node.collapse();
-                viewer.scene.setObjectsHighlighted([node.objectId], false);
-            }
+    if (searchBox && selectButton) {
+        searchBox.addEventListener("input", () => {
+            // Your search logic here
         });
 
-        if (!query) {
-            treeView.collapseAllNodes();
-            viewer.scene.setObjectsHighlighted([], false);
-        }
-    });
-}
+        selectButton.addEventListener("click", () => {
+            // Your select button logic here
+        });
+    } else {
+        console.error("One or more UI elements not found.");
+    }
+});
