@@ -1,7 +1,6 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 import { setupTreeView } from './treeViewSettings.js';
-import { setupUI } from './uiHandlers.js';
 
 export function setupViewer(canvasId) {
     const viewer = new Viewer({ canvasId, transparent: true });
@@ -25,8 +24,8 @@ export function setupViewer(canvasId) {
         const treeView = new TreeViewPlugin(viewer, {
             containerElement: document.getElementById("treeViewContainer"),
             autoExpandDepth: 1,
-            groupTypes: true,
-            groupLevels: false // Default to grouping by types
+            groupTypes: true,  // Group by IFC types by default
+            groupLevels: false // Do not group by levels
         });
 
         model.on("loaded", () => {
@@ -34,9 +33,6 @@ export function setupViewer(canvasId) {
 
             // Setup tree view context menu and node title clicks
             setupTreeView(viewer, treeView);
-
-            // Pass treeView to setupUI for grouping controls
-            setupUI(viewer, treeView);
         });
 
         model.on("error", (error) => {
