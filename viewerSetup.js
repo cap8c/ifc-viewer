@@ -1,4 +1,5 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
 import { setupUI } from './uiHandlers.js';
 
 export function setupViewer(canvasId) {
@@ -7,19 +8,23 @@ export function setupViewer(canvasId) {
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
 
-    const ifcLoader = new WebIFCLoaderPlugin(viewer, {
-        src: "RST_basic_sample_project.ifc",
-        edges: true,
-    });
+    const ifcAPI = new WebIFC.IfcAPI();
+    ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
-    const treeView = new TreeViewPlugin(viewer, {
-        containerElement: document.getElementById("treeViewContainer"),
-        autoExpandDepth: 1,
-        groupTypes: true
-    });
+    ifcAPI.Init().then(() => {
+        const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI: ifcAPI });
 
-    viewer.on("sceneTick", () => {
-        setupUI(); // Ensure UI is setup after viewer setup
+        const treeView = new TreeViewPlugin(viewer, {
+            containerElement: document.getElementById("treeViewContainer"),
+            autoExpandDepth: 1,
+            groupTypes: true
+        });
+
+        viewer.on("sceneTick", () => {
+            setupUI(); // Ensure UI is setup after viewer setup
+        });
+    }).catch((error) => {
+        console.error("Error initializing IFC API:", error);
     });
 
     return viewer;
