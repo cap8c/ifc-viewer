@@ -1,6 +1,5 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
-import { AmbientLight, DirLight } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/src/viewer/scene/lights";
 import { setupTreeView } from './treeViewSettings.js';
 
 export function setupViewer(canvasId) {
@@ -31,19 +30,6 @@ export function setupViewer(canvasId) {
 
         model.on("loaded", () => {
             viewer.cameraFlight.flyTo({ aabb: model.aabb });
-
-            // Add ambient light
-            new AmbientLight(viewer.scene, {
-                color: [0.7, 0.7, 0.7], // Soft white ambient light
-                intensity: 1.0
-            });
-
-            // Add directional light
-            new DirLight(viewer.scene, {
-                dir: [0.5, -1, 0.5],
-                color: [1.0, 1.0, 1.0],
-                intensity: 0.8
-            });
 
             // Setup tree view context menu
             setupTreeView(viewer, treeView);
