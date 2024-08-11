@@ -1,16 +1,24 @@
-export function setupUI(viewer, treeView) {
-    const groupByTypesButton = document.getElementById("groupByTypesButton");
-    const groupByLevelsButton = document.getElementById("groupByLevelsButton");
+export function setupUI(viewer) {
+    const searchBox = document.getElementById("searchBox");
 
-    groupByTypesButton.addEventListener("click", () => {
-        treeView.groupTypes = true;
-        treeView.groupLevels = false;
-        treeView.refresh();  // Rebuild the tree with the new grouping
-    });
+    searchBox.addEventListener("input", () => {
+        const query = searchBox.value.toLowerCase();
+        const treeView = viewer.scene.plugins.TreeViewPlugin;
 
-    groupByLevelsButton.addEventListener("click", () => {
-        treeView.groupTypes = false;
-        treeView.groupLevels = true;
-        treeView.refresh();  // Rebuild the tree with the new grouping
+        if (query) {
+            treeView.getNodes().forEach(node => {
+                const name = node.title.toLowerCase();
+                if (name.includes(query)) {
+                    node.expand();
+                    viewer.scene.setObjectsHighlighted([node.entity.id], true);
+                } else {
+                    node.collapse();
+                    viewer.scene.setObjectsHighlighted([node.entity.id], false);
+                }
+            });
+        } else {
+            treeView.collapseAllNodes();
+            viewer.scene.setObjectsHighlighted([], false);
+        }
     });
 }
