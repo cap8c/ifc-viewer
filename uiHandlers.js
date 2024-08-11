@@ -4,18 +4,19 @@ export function setupUI(viewer, treeView) {
     searchBox.addEventListener("input", () => {
         const query = searchBox.value.toLowerCase();
 
-        if (query) {
-            treeView.getNodes().forEach(node => {
-                const name = node.title.toLowerCase();
-                if (name.includes(query)) {
-                    node.expand();
-                    viewer.scene.setObjectsHighlighted([node.entity.id], true);
-                } else {
-                    node.collapse();
-                    viewer.scene.setObjectsHighlighted([node.entity.id], false);
-                }
-            });
-        } else {
+        treeView.getNodes().forEach(node => {
+            const name = node.title.toLowerCase();
+            if (name.includes(query)) {
+                node.expand();
+                viewer.scene.setObjectsHighlighted([node.entity.id], true);
+            } else {
+                node.collapse();
+                viewer.scene.setObjectsHighlighted([node.entity.id], false);
+            }
+        });
+
+        // If the search box is cleared, collapse all nodes and remove highlights
+        if (!query) {
             treeView.collapseAllNodes();
             viewer.scene.setObjectsHighlighted([], false);
         }
