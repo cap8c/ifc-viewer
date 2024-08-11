@@ -1,37 +1,18 @@
 export function setupUI(viewer) {
-    const searchBox = document.getElementById("searchBox");
-    const selectButton = document.getElementById("selectButton");
+    const groupByTypesButton = document.getElementById("groupByTypesButton");
+    const groupByLevelsButton = document.getElementById("groupByLevelsButton");
 
-    if (!searchBox || !selectButton) {
-        console.error("SearchBox or SelectButton not found.");
-        return;
-    }
-
-    const treeView = viewer.scene.treeView;
-
-    searchBox.addEventListener("input", () => {
-        const query = searchBox.value.toLowerCase();
-        
-        if (query) {
-            treeView.getNodes().forEach(node => {
-                const name = node.title.toLowerCase();
-                if (name.includes(query)) {
-                    node.expand();
-                    viewer.scene.setObjectsHighlighted([node.entity.id], true);
-                } else {
-                    node.collapse();
-                    viewer.scene.setObjectsHighlighted([node.entity.id], false);
-                }
-            });
-        } else {
-            treeView.collapseAllNodes();
-            viewer.scene.setObjectsHighlighted([], false);
-        }
+    groupByTypesButton.addEventListener("click", () => {
+        const treeView = viewer.scene.plugins.TreeViewPlugin;
+        treeView.groupTypes = true;
+        treeView.groupLevels = false;
+        treeView.refresh();  // Rebuild the tree with the new grouping
     });
 
-    const toggleSelectionTool = () => {
-        // Existing select button functionality...
-    };
-
-    selectButton.addEventListener("click", toggleSelectionTool);
+    groupByLevelsButton.addEventListener("click", () => {
+        const treeView = viewer.scene.plugins.TreeViewPlugin;
+        treeView.groupTypes = false;
+        treeView.groupLevels = true;
+        treeView.refresh();  // Rebuild the tree with the new grouping
+    });
 }
