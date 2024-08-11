@@ -1,3 +1,5 @@
+import { DirLight } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/src/viewer/scene/lights/DirLight.js";
+
 export function setupUI(viewer) {
   const searchBox = document.getElementById("searchBox");
   const selectButton = document.getElementById("selectButton");
@@ -40,9 +42,9 @@ export function setupUI(viewer) {
 
   // X-Ray Mode Toggle
   xRayButton.addEventListener("click", () => {
-    const xRayEnabled = viewer.scene.objects.some(obj => obj.opacity === 0.3); // Check if any object is in X-Ray mode
-    viewer.scene.objects.forEach(obj => {
-      obj.opacity = xRayEnabled ? 1.0 : 0.3; // Toggle opacity
+    const xRayEnabled = viewer.scene.models.some(model => model.opacity === 0.3); // Check if any model is in X-Ray mode
+    viewer.scene.models.forEach(model => {
+      model.opacity = xRayEnabled ? 1.0 : 0.3; // Toggle opacity
     });
   });
 
