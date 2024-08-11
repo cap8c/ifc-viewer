@@ -1,6 +1,4 @@
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
-import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
-import { setupTreeView } from './treeViewSettings.js';
 import { setupUI } from './uiHandlers.js';
 
 export function setupViewer(canvasId) {
@@ -9,41 +7,19 @@ export function setupViewer(canvasId) {
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
 
-    const IfcAPI = new WebIFC.IfcAPI();
-    IfcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
+    const ifcLoader = new WebIFCLoaderPlugin(viewer, {
+        src: "RST_basic_sample_project.ifc",
+        edges: true,
+    });
 
-    IfcAPI.Init().then(() => {
-        const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI });
+    const treeView = new TreeViewPlugin(viewer, {
+        containerElement: document.getElementById("treeViewContainer"),
+        autoExpandDepth: 1,
+        groupTypes: true
+    });
 
-        const model = ifcLoader.load({
-            id: "myModel",
-            src: "RST_basic_sample_project.ifc",
-            excludeTypes: ["IfcSpace"],
-            edges: true,
-        });
-
-        const treeView = new TreeViewPlugin(viewer, {
-            containerElement: document.getElementById("treeViewContainer"),
-            autoExpandDepth: 1,
-            groupTypes: true,  // Group by IFC types by default
-            groupLevels: false // Do not group by levels
-        });
-
-        model.on("loaded", () => {
-            viewer.cameraFlight.flyTo({ aabb: model.aabb });
-
-            // Setup tree view context menu and node title clicks
-            setupTreeView(viewer, treeView);
-
-            // Pass treeView to setupUI for grouping controls
-            setupUI(viewer, treeView);
-        });
-
-        model.on("error", (error) => {
-            console.error("Error loading IFC model:", error);
-        });
-    }).catch((error) => {
-        console.error("Error initializing IfcAPI:", error);
+    viewer.on("sceneTick", () => {
+        setupUI(); // Ensure UI is setup after viewer setup
     });
 
     return viewer;
