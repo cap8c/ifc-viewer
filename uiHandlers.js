@@ -1,9 +1,8 @@
-export function setupUI(viewer) {
+export function setupUI(viewer, treeView) {
     const searchBox = document.getElementById("searchBox");
 
     searchBox.addEventListener("input", () => {
         const query = searchBox.value.toLowerCase();
-        const treeView = viewer.scene.plugins.TreeViewPlugin;
 
         if (query) {
             treeView.getNodes().forEach(node => {
