@@ -29,6 +29,17 @@ export function setupViewer(canvasId) {
         model.on("loaded", () => {
             console.log("Model loaded successfully.");
             viewer.cameraFlight.flyTo({ aabb: model.aabb });
+
+            // Initialize TreeViewPlugin
+            const treeView = new TreeViewPlugin(viewer, {
+                containerElement: document.getElementById("treeViewContainer"),
+                autoExpandDepth: 1,
+                groupTypes: true
+            });
+
+            // Add the model to the tree view
+            treeView.addModel(model);
+
         });
 
         model.on("error", (error) => {
