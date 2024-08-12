@@ -1,18 +1,21 @@
-export function setupUI() {
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchBox = document.getElementById("searchBox");
-        const selectButton = document.getElementById("selectButton");
+export function setupUI(viewer, treeView) {
+    treeView.on("nodeTitleClicked", (e) => {
+        const scene = viewer.scene;
+        const objectIds = [];
 
-        if (searchBox && selectButton) {
-            searchBox.addEventListener("input", () => {
-                // Your search logic here
-            });
+        e.treeViewPlugin.withNodeTree(e.treeViewNode, (node) => {
+            if (node.objectId) {
+                objectIds.push(node.objectId);
+            }
+        });
 
-            selectButton.addEventListener("click", () => {
-                // Your select button logic here
-            });
-        } else {
-            console.error("One or more UI elements not found.");
-        }
+        // X-ray all other objects
+        scene.setObjectsXRayed(scene.objectIds, true);
+        // Highlight and zoom to selected object
+        scene.setObjectsXRayed(objectIds, false);
+        viewer.cameraFlight.flyTo({
+            aabb: scene.getAABB(objectIds),
+            duration: 0.5,
+        });
     });
 }
