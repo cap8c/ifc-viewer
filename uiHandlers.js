@@ -1,3 +1,4 @@
+// uiHandlers.js
 export function setupUI(viewer, treeView) {
     treeView.on("nodeTitleClicked", (e) => {
         const scene = viewer.scene;
