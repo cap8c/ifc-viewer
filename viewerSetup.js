@@ -1,5 +1,5 @@
-// viewerSetup.js
 import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";  // Correct import for WebIFC
 
 export function setupViewer(canvasId) {
     const viewer = new Viewer({ canvasId, transparent: true });
@@ -7,7 +7,7 @@ export function setupViewer(canvasId) {
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
 
-    const ifcAPI = new WebIFC.IfcAPI();
+    const ifcAPI = new WebIFC.IfcAPI();  // Correct initialization of WebIFC
     ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
     ifcAPI.Init().then(() => {
