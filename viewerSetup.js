@@ -1,6 +1,5 @@
-import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin, ViewCubePlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
 import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
-import { setupUI } from './uiHandlers.js';
 
 export function setupViewer(canvasId) {
     const viewer = new Viewer({ canvasId, transparent: true });
@@ -8,9 +7,11 @@ export function setupViewer(canvasId) {
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
 
+    // Initialize WebIFC
     const ifcAPI = new WebIFC.IfcAPI();
     ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
+    // Initialize the Viewer
     ifcAPI.Init().then(() => {
         const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI: ifcAPI });
 
@@ -29,6 +30,27 @@ export function setupViewer(canvasId) {
             });
 
             setupUI(viewer, treeView);  // Pass treeView to setupUI
+
+            // Add a View Cube
+            const viewCube = new ViewCubePlugin(viewer, {
+                canvasId: canvasId,
+                containerElement: viewer.scene.canvas,
+                alignment: "top-right",
+                size: [100, 100],
+            });
+
+            viewCube.on("hover", (view) => {
+                console.log("Hovered over view:", view);
+            });
+
+            viewCube.on("click", (view) => {
+                viewer.cameraFlight.flyTo({
+                    eye: view.eye,
+                    look: view.look,
+                    up: view.up,
+                    duration: 0.5,
+                });
+            });
         });
 
         model.on("error", (error) => {
