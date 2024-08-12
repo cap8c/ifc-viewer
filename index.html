@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>IFC Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Link to Font Awesome for icons -->
     <style>
         body, html {
             margin: 0;
@@ -17,7 +18,7 @@
         #myCanvas {
             width: 100%; /* Canvas takes full width */
             height: 100%;
-            background-color: transparent; /* Remove background color to show gradient */
+            background-color: linear-gradient(135deg, #f5f5f5, #e0e0e0); /* Remove background color to show gradient */
         }
 
         #treeViewContainer {
@@ -31,7 +32,7 @@
             transition: left 0.3s ease; /* Smooth transition */
             overflow-y: scroll;
             z-index: 1000; /* Ensure it overlaps the canvas */
-            padding-top: 50px; /* Add padding to avoid overlap with button */
+            padding-top: 60px; /* Add padding to avoid overlap with button */
         }
 
         #toggleButton {
@@ -46,6 +47,10 @@
             z-index: 1001; /* Ensure it's above the tree view */
         }
 
+        #toggleButton i {
+            font-size: 18px;
+        }
+
         #toggleButton:hover {
             background-color: #0056b3;
         }
@@ -54,7 +59,9 @@
 <body>
 
 <!-- Button to toggle the tree view -->
-<button id="toggleButton" onclick="toggleTreeView()">☰</button>
+<button id="toggleButton" onclick="toggleTreeView()">
+    <i class="fas fa-stream"></i> <!-- Hierarchy-like icon -->
+</button>
 
 <!-- Tree view container -->
 <div id="treeViewContainer"></div>
