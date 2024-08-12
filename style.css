@@ -25,8 +25,10 @@ body, html {
     width: 80%;
     height: 100%;
     float: right;
-    background-color: lightgray;
+    background-color: lightgray; /* Temporary background color */
+    border: 2px solid red; /* Add a red border to see the canvas */
 }
+
 
 #myNavCubeCanvas {
     position: absolute;
