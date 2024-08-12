@@ -1,85 +1,43 @@
-body, html {
-    font-family: 'Roboto', sans-serif;
-    background: #f2f2f2;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api.js";
+import { setupUI } from './uiHandlers.js';
 
-#treeViewContainer {
-    width: 20%;
-    height: 100%;
-    background-color: #f0f0f0;
-    overflow-y: scroll;
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    padding: 10px;
-    border-right: 1px solid #ccc;
-}
+export function setupViewer(canvasId) {
+    const viewer = new Viewer({ canvasId, transparent: true });
+    viewer.camera.eye = [-2.56, 8.38, 8.27];
+    viewer.camera.look = [13.44, 3.31, -14.83];
+    viewer.camera.up = [0.10, 0.98, -0.14];
 
-#treeViewContainer ul {
-    list-style-type: none;
-    padding-left: 20px;
-}
+    const ifcAPI = new WebIFC.IfcAPI();
+    ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
-#treeViewContainer ul li span {
-    display: block;
-    padding: 5px;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
+    ifcAPI.Init().then(() => {
+        const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI: ifcAPI });
 
-#treeViewContainer ul li span:hover {
-    background-color: #e0e0e0;
-    color: #007bff;
-}
+        const model = ifcLoader.load({
+            src: "RST_basic_sample_project.ifc",
+            edges: true,
+        });
 
-#treeViewContainer ul li span.selected {
-    background-color: #007bff;
-    color: white;
-}
+        model.on("loaded", () => {
+            viewer.cameraFlight.flyTo({ aabb: model.aabb });
 
-#myCanvas {
-    width: 80%;
-    height: 100%;
-    float: right;
-}
+            const treeView = new TreeViewPlugin(viewer, {
+                containerElement: document.getElementById("treeViewContainer"),
+                autoExpandDepth: 1,
+                groupTypes: true
+            });
 
-/* New View Cube Styling */
-.view-cube {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 100px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+            setupUI(viewer, treeView);  // Pass treeView to setupUI
+        });
 
-/* Optional: Additional styles for the cube sides */
-.view-cube-face {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    color: #333;
-    text-align: center;
-    border: 1px solid #ccc;
-    background-color: #fafafa;
-}
+        model.on("error", (error) => {
+            console.error("Error loading IFC model:", error);
+        });
 
-.view-cube-face:hover {
-    background-color: #e0e0e0;
-    color: #007bff;
+    }).catch((error) => {
+        console.error("Error initializing IFC API:", error);
+    });
+
+    return viewer;
 }
