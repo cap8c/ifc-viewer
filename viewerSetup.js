@@ -14,15 +14,20 @@ export function setupViewer(canvasId) {
     ifcAPI.Init().then(() => {
         const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI: ifcAPI });
 
-        const treeView = new TreeViewPlugin(viewer, {
-            containerElement: document.getElementById("treeViewContainer"),
-            autoExpandDepth: 1,
-            groupTypes: true
+        const model = ifcLoader.load({
+            src: "RST_basic_sample_project.ifc", // Ensure the path to your IFC file is correct
+            edges: true,
         });
 
-        viewer.on("sceneTick", () => {
-            setupUI(); // Ensure UI is setup after viewer setup
+        model.on("loaded", () => {
+            viewer.cameraFlight.flyTo({ aabb: model.aabb });
+            setupUI();  // Setup UI after model is loaded
         });
+
+        model.on("error", (error) => {
+            console.error("Error loading IFC model:", error);
+        });
+
     }).catch((error) => {
         console.error("Error initializing IFC API:", error);
     });
