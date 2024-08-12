@@ -1,25 +1,29 @@
 export function setupUI(viewer, treeView) {
-    if (treeView) {
-        treeView.on("nodeTitleClicked", (e) => {
-            const scene = viewer.scene;
-            const objectIds = [];
+    treeView.on("nodeTitleClicked", (e) => {
+        const scene = viewer.scene;
+        const objectIds = [];
 
-            treeView.withNodeTree(e.treeViewNode, (node) => {
-                if (node.objectId) {
-                    objectIds.push(node.objectId);
-                }
-            });
+        // Deselect all nodes
+        const spans = document.querySelectorAll("#treeViewContainer ul li span");
+        spans.forEach(span => span.classList.remove("selected"));
 
-            // X-ray all other objects
-            scene.setObjectsXRayed(scene.objectIds, true);
-            // Highlight and zoom to selected object
-            scene.setObjectsXRayed(objectIds, false);
-            viewer.cameraFlight.flyTo({
-                aabb: scene.getAABB(objectIds),
-                duration: 0.5,
-            });
+        // Select the clicked node
+        const selectedNodeSpan = e.treeViewNode.domElement.querySelector('span');
+        selectedNodeSpan.classList.add("selected");
+
+        treeView.withNodeTree(e.treeViewNode, (node) => {
+            if (node.objectId) {
+                objectIds.push(node.objectId);
+            }
         });
-    } else {
-        console.error("TreeViewPlugin is not defined.");
-    }
+
+        // X-ray all other objects
+        scene.setObjectsXRayed(scene.objectIds, true);
+        // Highlight and zoom to selected object
+        scene.setObjectsXRayed(objectIds, false);
+        viewer.cameraFlight.flyTo({
+            aabb: scene.getAABB(objectIds),
+            duration: 0.5,
+        });
+    });
 }
