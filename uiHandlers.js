@@ -7,9 +7,13 @@ export function setupUI(viewer, treeView) {
         const spans = document.querySelectorAll("#treeViewContainer ul li span");
         spans.forEach(span => span.classList.remove("selected"));
 
-        // Select the clicked node
-        const selectedNodeSpan = e.treeViewNode.domElement.querySelector('span');
-        selectedNodeSpan.classList.add("selected");
+        // Select the clicked node, if possible
+        if (e.treeViewNode && e.treeViewNode.domElement) {
+            const selectedNodeSpan = e.treeViewNode.domElement.querySelector('span');
+            if (selectedNodeSpan) {
+                selectedNodeSpan.classList.add("selected");
+            }
+        }
 
         treeView.withNodeTree(e.treeViewNode, (node) => {
             if (node.objectId) {
