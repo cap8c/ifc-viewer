@@ -3,7 +3,7 @@ import * as WebIFC from "https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/web-ifc-api
 import { setupUI } from './uiHandlers.js';
 
 export function setupViewer(canvasId) {
-    const viewer = new Viewer({ canvasId, transparent: true });
+    const viewer = new Viewer({ canvasId, transparent: true,  backgroundColor: [0, 0, 0, 0] // Fully transparent background });
     viewer.camera.eye = [-2.56, 8.38, 8.27];
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
