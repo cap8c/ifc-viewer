@@ -18,21 +18,21 @@
         #myCanvas {
             width: 100%; /* Canvas takes full width */
             height: 100%;
-            background-color: transparent; /* Remove background color to show gradient */
+            background-color: transparent; /* Ensure no background color on canvas */
         }
 
         #treeViewContainer {
-            position: fixed; /* Fixed position for overlap */
+            position: fixed;
             top: 0;
-            left: -25%; /* Initially hidden off-screen */
-            width: 25%; /* Set tree view width to 25% */
+            left: -25%;
+            width: 25%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.8); /* Transparent background */
-            backdrop-filter: blur(10px); /* Apply blur to the background */
-            transition: left 0.3s ease; /* Smooth transition */
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            transition: left 0.3s ease;
             overflow-y: scroll;
-            z-index: 1000; /* Ensure it overlaps the canvas */
-            padding-top: 60px; /* Add padding to avoid overlap with button */
+            z-index: 1000;
+            padding-top: 60px;
         }
 
         #toggleButton {
@@ -44,7 +44,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            z-index: 1001; /* Ensure it's above the tree view */
+            z-index: 1001;
         }
 
         #toggleButton i {
@@ -60,7 +60,7 @@
 
 <!-- Button to toggle the tree view -->
 <button id="toggleButton" onclick="toggleTreeView()">
-    <i class="fas fa-list-tree"></i> <!-- List tree icon -->
+    <i class="fas fa-sitemap"></i> <!-- Hierarchy icon -->
 </button>
 
 <!-- Tree view container -->
