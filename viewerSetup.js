@@ -8,6 +8,21 @@ export function setupViewer(canvasId) {
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
 
+const navCube = new NavCubePlugin(viewer, {
+
+    canvasID: "myNavCubeCanvas",
+
+    visible: true,         // Initially visible (default)
+
+    cameraFly: true,       // Fly camera to each selected axis/diagonal
+    cameraFitFOV: 45,      // How much field-of-view the scene takes once camera has fitted it to view
+    cameraFlyDuration: 0.5,// How long (in seconds) camera takes to fly to each new axis/diagonal
+
+    fitVisible: false,     // Fit whole scene, including invisible objects (default)
+
+    synchProjection: false // Keep NavCube in perspective projection, even when camera switches to ortho (default)
+});
+
     const ifcAPI = new WebIFC.IfcAPI();
     ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
 
