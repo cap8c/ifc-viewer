@@ -22,17 +22,13 @@ export function setupViewer(canvasId) {
         model.on("loaded", () => {
             viewer.cameraFlight.flyTo({ aabb: model.aabb });
 
-            if (!viewer.scene.models["__16"]) { // Ensure the model isn't already added
-                const treeView = new TreeViewPlugin(viewer, {
-                    containerElement: document.getElementById("treeViewContainer"),
-                    autoExpandDepth: 1,
-                    groupTypes: true
-                });
+            const treeView = new TreeViewPlugin(viewer, {
+                containerElement: document.getElementById("treeViewContainer"),
+                autoExpandDepth: 1,
+                groupTypes: true
+            });
 
-                treeView.addModel(model); // Add the model to the tree view
-            }
-
-            setupUI(viewer, treeView); // Pass treeView to setupUI
+            setupUI(viewer, treeView);  // Pass treeView to setupUI
         });
 
         model.on("error", (error) => {
