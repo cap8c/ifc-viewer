@@ -10,7 +10,7 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
-            font-family: 'Roboto', sans-serif;
+            font-family: Arial, sans-serif;
             background: #f2f2f2;
         }
         #myCanvas {
@@ -21,12 +21,9 @@
         #treeViewContainer {
             width: 20%;
             height: 100%;
+            float: left;
             background-color: #f0f0f0;
             overflow-y: scroll;
-            font-family: 'Roboto', sans-serif;
-            font-size: 14px;
-            padding: 10px;
-            border-right: 1px solid #ccc;
         }
     </style>
 </head>
@@ -35,6 +32,7 @@
 <div id="treeViewContainer"></div>
 <canvas id="myCanvas"></canvas>
 
+<!-- Include the modular scripts -->
 <script type="module" src="viewerSetup.js"></script>
 <script type="module" src="uiHandlers.js"></script>
 <script type="module" src="main.js"></script>
