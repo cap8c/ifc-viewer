@@ -21,36 +21,12 @@ body, html {
     border-right: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
 }
 
-#treeViewContainer ul {
-    list-style-type: none;
-    padding-left: 20px;
-}
-
-#treeViewContainer ul li span {
-    display: block;
-    padding: 5px;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-#treeViewContainer ul li span:hover {
-    background-color: #e0e0e0;
-    color: #007bff;
-}
-
-#treeViewContainer ul li span.selected {
-    background-color: #007bff;
-    color: white;
-}
-
 #myCanvas {
     width: 80%;
     height: 100%;
     float: right;
 }
 
-/* Positioning the nav cube */
 #myNavCubeCanvas {
     position: absolute;
     top: 10px;
