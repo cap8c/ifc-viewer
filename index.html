@@ -3,19 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>IFC Viewer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- Link to your external CSS file -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+        #myCanvas {
+            width: 80%;
+            height: 100%;
+            float: right;
+        }
+        #treeViewContainer {
+            width: 20%;
+            height: 100%;
+            float: left;
+            background-color: #f0f0f0;
+            overflow-y: scroll;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Tree View Container -->
 <div id="treeViewContainer"></div>
-
-<!-- Main Canvas for 3D Viewer -->
 <canvas id="myCanvas"></canvas>
-
-<!-- Canvas for Nav Cube -->
-<canvas id="myNavCubeCanvas"></canvas>
 
 <!-- Include the modular scripts -->
 <script type="module" src="viewerSetup.js"></script>
