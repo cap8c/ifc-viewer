@@ -39,8 +39,8 @@ export function setupViewer(canvasId) {
 
             const treeView = new TreeViewPlugin(viewer, {
                 containerElement: document.getElementById("treeViewContainer"),
-                autoExpandDepth: 1,
-                groupTypes: true
+                autoExpandDepth: 2,
+                hierarchy: "types"
             });
 
             setupUI(viewer, treeView);  // Pass treeView to setupUI
