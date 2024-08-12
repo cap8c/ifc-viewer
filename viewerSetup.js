@@ -38,11 +38,17 @@ export function setupViewer(canvasId) {
             console.log("Model loaded successfully.");
             viewer.cameraFlight.flyTo({ aabb: model.aabb });  // Fly the camera to fit the model
 
+            // Initialize TreeViewPlugin only once
             const treeView = new TreeViewPlugin(viewer, {
                 containerElement: document.getElementById("treeViewContainer"),
                 autoExpandDepth: 1,
                 groupTypes: true
             });
+
+            // This ensures the model is added to the tree view only once
+            if (!treeView.getModel(model.id)) {
+                treeView.addModel(model);
+            }
 
             setupUI(viewer, treeView);
         });
