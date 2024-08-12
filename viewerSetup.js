@@ -1,4 +1,6 @@
 // viewerSetup.js
+import { Viewer, WebIFCLoaderPlugin, TreeViewPlugin } from "https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js";
+
 export function setupViewer(canvasId) {
     const viewer = new Viewer({ canvasId, transparent: true });
     viewer.camera.eye = [-2.56, 8.38, 8.27];
