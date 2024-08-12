@@ -11,7 +11,7 @@ export function setupViewer(canvasId) {
 
     // Add the NavCube plugin
     const navCube = new NavCubePlugin(viewer, {
-        canvasId: "myNavCubeCanvas",  // Ensure this matches the ID in your HTML
+        canvasId: "myNavCubeCanvas",
         visible: true,
         cameraFly: true,
         cameraFitFOV: 45,
@@ -35,7 +35,8 @@ export function setupViewer(canvasId) {
 
         // When the model is loaded, set up the camera and tree view
         model.on("loaded", () => {
-            viewer.cameraFlight.flyTo({ aabb: model.aabb });
+            console.log("Model loaded successfully.");
+            viewer.cameraFlight.flyTo({ aabb: model.aabb });  // Fly the camera to fit the model
 
             const treeView = new TreeViewPlugin(viewer, {
                 containerElement: document.getElementById("treeViewContainer"),
@@ -43,7 +44,7 @@ export function setupViewer(canvasId) {
                 groupTypes: true
             });
 
-            setupUI(viewer, treeView);  // Pass the tree view to the UI setup function
+            setupUI(viewer, treeView);
         });
 
         // Error handling for model loading
