@@ -39,7 +39,7 @@ export function setupViewer(canvasId) {
 
             const treeView = new TreeViewPlugin(viewer, {
                 containerElement: document.getElementById("treeViewContainer"),
-                autoExpandDepth: 2,
+                autoExpandDepth: 1,
                 hierarchy: "types"
             });
 
