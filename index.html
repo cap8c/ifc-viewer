@@ -28,25 +28,6 @@
             padding: 10px;
             border-right: 1px solid #ccc;
         }
-        #treeViewContainer ul {
-            list-style-type: none;
-            padding-left: 20px;
-        }
-        #treeViewContainer ul li span {
-            display: block;
-            padding: 5px;
-            color: #333;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        #treeViewContainer ul li span:hover {
-            background-color: #e0e0e0;
-            color: #007bff;
-        }
-        #treeViewContainer ul li span.selected {
-            background-color: #007bff;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -54,7 +35,6 @@
 <div id="treeViewContainer"></div>
 <canvas id="myCanvas"></canvas>
 
-<!-- Include the modular scripts -->
 <script type="module" src="viewerSetup.js"></script>
 <script type="module" src="uiHandlers.js"></script>
 <script type="module" src="main.js"></script>
