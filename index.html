@@ -17,20 +17,21 @@
         #myCanvas {
             width: 100%; /* Canvas takes full width */
             height: 100%;
-            background-color:  rgba(255, 255, 255, 0.0); /* Optional: background color */
+            background-color: transparent; /* Remove background color to show gradient */
         }
 
         #treeViewContainer {
             position: fixed; /* Fixed position for overlap */
             top: 0;
             left: -25%; /* Initially hidden off-screen */
-            width: 25%;
+            width: 25%; /* Set tree view width to 25% */
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent background */
             backdrop-filter: blur(10px); /* Apply blur to the background */
             transition: left 0.3s ease; /* Smooth transition */
             overflow-y: scroll;
             z-index: 1000; /* Ensure it overlaps the canvas */
+            padding-top: 50px; /* Add padding to avoid overlap with button */
         }
 
         #toggleButton {
@@ -70,7 +71,7 @@
     function toggleTreeView() {
         const treeViewContainer = document.getElementById('treeViewContainer');
         if (treeViewContainer.style.left === '0px') {
-            treeViewContainer.style.left = '-30%'; // Hide off-screen
+            treeViewContainer.style.left = '-25%'; // Hide off-screen
         } else {
             treeViewContainer.style.left = '0px'; // Show on-screen
         }
