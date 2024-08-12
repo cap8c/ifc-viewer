@@ -15,7 +15,7 @@ export function setupViewer(canvasId) {
         const ifcLoader = new WebIFCLoaderPlugin(viewer, { WebIFC, IfcAPI: ifcAPI });
 
         const model = ifcLoader.load({
-            src: "RST_basic_sample_project.ifc", // Ensure the path to your IFC file is correct
+            src: "RST_basic_sample_project.ifc",
             edges: true,
         });
 
@@ -28,7 +28,7 @@ export function setupViewer(canvasId) {
                 groupTypes: true
             });
 
-            setupUI();  // Setup UI after model is loaded
+            setupUI(viewer, treeView);  // Pass treeView to setupUI
         });
 
         model.on("error", (error) => {
