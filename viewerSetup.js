@@ -19,6 +19,7 @@ export function setupViewer(canvasId) {
         cameraFitFOV: 45,
         cameraFlyDuration: 0.5,
         color: "lightgrey",
+        shadowVisible: false,
         fitVisible: false,
         synchProjection: false
     });
