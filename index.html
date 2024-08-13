@@ -98,6 +98,15 @@
             treeViewContainer.style.left = '0px'; // Show on-screen
         }
     }
+
+    
+    // Improve NavCube text sharpness
+    const navCubeCanvas = document.getElementById("myNavCubeCanvas");
+    const scale = window.devicePixelRatio; // Get the device's pixel ratio
+    navCubeCanvas.width = 100 * scale; // Set higher resolution width
+    navCubeCanvas.height = 100 * scale; // Set higher resolution height
+    const ctx = navCubeCanvas.getContext('2d');
+    ctx.scale(scale, scale); // Scale the context to the device pixel ratio
 </script>
 
 </body>
