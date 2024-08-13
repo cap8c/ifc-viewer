@@ -10,17 +10,15 @@ export function setupViewer(canvasId) {
 
     const navCube = new NavCubePlugin(viewer, {
 
-        canvasID: "myNavCubeCanvas",
-    
-        visible: true,         // Initially visible (default)
-    
-        cameraFly: true,       // Fly camera to each selected axis/diagonal
-        cameraFitFOV: 45,      // How much field-of-view the scene takes once camera has fitted it to view
-        cameraFlyDuration: 0.5,// How long (in seconds) camera takes to fly to each new axis/diagonal
-    
-        fitVisible: false,     // Fit whole scene, including invisible objects (default)
-    
-        synchProjection: false // Keep NavCube in perspective projection, even when camera switches to ortho (default)
+    // Initialize NavCube
+    const navCube = new NavCubePlugin(viewer, {
+        canvasID: "myNavCubeCanvas", // This ID must match the HTML canvas ID
+        visible: true,
+        cameraFly: true,
+        cameraFitFOV: 45,
+        cameraFlyDuration: 0.5,
+        fitVisible: false,
+        synchProjection: false
     });
 
     const ifcAPI = new WebIFC.IfcAPI();
