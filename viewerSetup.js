@@ -8,6 +8,9 @@ export function setupViewer(canvasId) {
     viewer.camera.look = [13.44, 3.31, -14.83];
     viewer.camera.up = [0.10, 0.98, -0.14];
 
+    // Get the canvas element directly
+    const navCubeCanvas = document.getElementById("myNavCubeCanvas");
+    
     // Initialize NavCube
     const navCube = new NavCubePlugin(viewer, {
         canvasID: "myNavCubeCanvas", // This ID must match the HTML canvas ID
