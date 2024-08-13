@@ -13,7 +13,7 @@ export function setupViewer(canvasId) {
     
     // Initialize NavCube
     const navCube = new NavCubePlugin(viewer, {
-        canvasID: "myNavCubeCanvas", // This ID must match the HTML canvas ID
+        canvasElement: navCubeCanvas, // Directly pass the canvas element
         visible: true,
         cameraFly: true,
         cameraFitFOV: 45,
@@ -21,6 +21,7 @@ export function setupViewer(canvasId) {
         fitVisible: false,
         synchProjection: false
     });
+
 
     const ifcAPI = new WebIFC.IfcAPI();
     ifcAPI.SetWasmPath("https://cdn.jsdelivr.net/npm/web-ifc@0.0.51/");
